@@ -1,0 +1,82 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/blue_band_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/dark</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="et_under_line">
+        <item name="colorControlNormal">@color/light_white</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="l_personal_item">
+        <item name="android:background">@drawable/white_btn_bg</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/common_text_height</item>
+        <item name="android:paddingStart">@dimen/activity_padding</item>
+        <item name="android:paddingEnd">@dimen/activity_padding</item>
+        <item name="android:elevation">@dimen/common_elevation</item>
+    </style>
+
+    <style name="tv_personal_item">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/dark</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingStart">@dimen/activity_padding</item>
+        <item name="android:paddingEnd">@dimen/activity_padding</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="style_orange_btn">
+        <item name="android:textSize">26.0sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingLeft">12.0dip</item>
+        <item name="android:paddingRight">12.0dip</item>
+        <item name="android:shadowDx">1.0</item>
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">0.5</item>
+    </style>
+
+    <style name="style_input">
+        <item name="android:textSize">15.0sp</item>
+        <item name="android:background">@drawable/white_et_bg</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:textColorHint">@color/gray_light</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:layout_height">@dimen/common_text_height</item>
+    </style>
+
+    <style name="style_config_input">
+        <item name="android:theme">@style/et_under_line</item>
+        <item name="android:gravity">center_vertical|start</item>
+        <item name="android:textSize">@dimen/config_input_text_size</item>
+        <item name="android:textColorHint">@color/white</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="style_config_button">
+        <item name="android:background">@drawable/white_stroke_button_bg</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_height">@dimen/common_button_height</item>
+    </style>
+
+</resources>
