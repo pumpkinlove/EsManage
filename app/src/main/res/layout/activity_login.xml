@@ -54,6 +54,7 @@
             android:orientation="vertical" >
 
             <EditText
+                android:text="999999"
                 android:id="@+id/et_username"
                 style="@style/style_config_input"
                 android:layout_width="match_parent"
@@ -64,6 +65,7 @@
                 android:maxLength="6"/>
 
             <EditText
+                android:text="999999"
                 android:id="@+id/et_password"
                 style="@style/style_config_input"
                 android:layout_width="match_parent"

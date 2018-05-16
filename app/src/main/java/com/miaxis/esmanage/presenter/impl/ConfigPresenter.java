@@ -3,7 +3,7 @@ package com.miaxis.esmanage.presenter.impl;
 import android.annotation.SuppressLint;
 import android.text.TextUtils;
 
-import com.miaxis.esmanage.Util.Constant;
+import com.miaxis.esmanage.util.Constant;
 import com.miaxis.esmanage.entity.Config;
 import com.miaxis.esmanage.model.ICompanyModel;
 import com.miaxis.esmanage.model.IConfigModel;
