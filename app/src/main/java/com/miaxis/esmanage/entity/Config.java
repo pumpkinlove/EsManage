@@ -10,7 +10,7 @@ import org.greenrobot.greendao.annotation.Id;
 
 @Entity
 public class Config {
-    @Id
+    @Id(autoincrement = true)
     private Long id;
     private String ip;
     private String port;
@@ -30,6 +30,9 @@ public class Config {
     }
 
     public Config(String ip, String port, String orgCode) {
+        this.ip = ip;
+        this.port = port;
+        this.orgCode = orgCode;
     }
 
     public Long getId() {

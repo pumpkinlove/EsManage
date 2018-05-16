@@ -1,6 +1,8 @@
 package com.miaxis.esmanage.view.activity;
 
-import android.os.Bundle;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.Button;
@@ -8,8 +10,10 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.jakewharton.rxbinding2.view.RxView;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.miaxis.esmanage.MainActivity;
 import com.miaxis.esmanage.R;
 import com.miaxis.esmanage.presenter.ILoginPresenter;
 import com.miaxis.esmanage.presenter.impl.LoginPresenter;
@@ -37,10 +41,11 @@ public class LoginActivity extends BaseActivity implements ILoginView, ConfigFra
     CardView cdLogin;
 
     private ILoginPresenter loginPresenter;
+    private ProgressDialog pdLogin;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onResume() {
+        super.onResume();
         loginPresenter.checkConfig();
     }
 
@@ -56,32 +61,36 @@ public class LoginActivity extends BaseActivity implements ILoginView, ConfigFra
 
     @Override
     protected void initView() {
-
+        pdLogin = new ProgressDialog(this);
     }
 
     @Override
     public void showLoading(String message) {
-
+        pdLogin.setMessage(message);
+        if (!pdLogin.isShowing()) {
+            pdLogin.show();
+        }
     }
 
     @Override
     public void hideLoading() {
-
+        if (pdLogin.isShowing()) {
+            pdLogin.dismiss();
+        }
     }
 
     @Override
     public void alert(String message) {
-
+        MaterialDialog dialog = new MaterialDialog.Builder(this)
+                .content(message)
+                .build();
+        dialog.show();
     }
 
     @Override
     public void onLoginSuccess() {
-
-    }
-
-    @Override
-    public void onLoginFail(String failMessage) {
-
+        Intent iToMain = new Intent(this, MainActivity.class);
+        startActivity(iToMain);
     }
 
     @Override
@@ -104,7 +113,7 @@ public class LoginActivity extends BaseActivity implements ILoginView, ConfigFra
         cdLogin.setVisibility(View.GONE);
     }
 
-    @OnClick
+    @OnClick(R.id.iv_config)
     void onIvConfigClick() {
         if (cdLogin.getVisibility() == View.VISIBLE) {
             cdLogin.setVisibility(View.GONE);
@@ -112,16 +121,25 @@ public class LoginActivity extends BaseActivity implements ILoginView, ConfigFra
         } else {
             loginPresenter.checkConfig();
         }
+    }
 
+    @OnClick(R.id.btn_login)
+    void onLoginClick() {
+        String account = etUsername.getText().toString().trim();
+        String pwd = etPassword.getText().toString().trim();
+        loginPresenter.doLogin(account, pwd);
     }
 
     @Override
     public void onConfigSaveSuccess() {
-
+        cdLogin.setVisibility(View.VISIBLE);
+        flConfig.setVisibility(View.GONE);
+        Toast.makeText(this, "保存成功", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onConfigSaveCancel() {
-
+        loginPresenter.checkConfig();
     }
+
 }

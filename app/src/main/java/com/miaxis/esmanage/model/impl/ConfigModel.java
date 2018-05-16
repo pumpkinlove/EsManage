@@ -16,16 +16,12 @@ public class ConfigModel implements IConfigModel {
 
     @Override
     public Config loadConfig() {
-        return configDao.loadByRowId(1L);
+        return configDao.load(1L);
     }
 
     @Override
     public boolean saveConfig(Config config) {
         long id =  configDao.insertOrReplace(config);
-        if (id == 1L) {
-            return true;
-        } else {
-            return false;
-        }
+        return id == 1L;
     }
 }

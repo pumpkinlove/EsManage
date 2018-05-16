@@ -44,7 +44,7 @@ public class ConfigDao extends AbstractDao<Config, Long> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"CONFIG\" (" + //
-                "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
+                "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "\"IP\" TEXT," + // 1: ip
                 "\"PORT\" TEXT," + // 2: port
                 "\"ORG_CODE\" TEXT," + // 3: orgCode

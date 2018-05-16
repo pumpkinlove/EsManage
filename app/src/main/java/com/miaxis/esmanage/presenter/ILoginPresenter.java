@@ -4,6 +4,6 @@ public interface ILoginPresenter extends IBasePresenter {
 
     void checkConfig();
 
-    void doLogin();
+    void doLogin(String account, String pwd);
 
 }
