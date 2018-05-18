@@ -1,13 +1,19 @@
 package com.miaxis.esmanage.entity;
 
+import android.support.annotation.NonNull;
+
+import com.miaxis.esmanage.view.custom.treeView.TreeNode;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Transient;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
-public class Company implements Serializable{
+public class Company implements Serializable, TreeNode {
 	private static final long serialVersionUID = 9055024621635991911L;
 	private int id;
 	private String compname;
@@ -22,6 +28,15 @@ public class Company implements Serializable{
 	private String remark;
 	private String opusername;
 	private int subCount;
+
+	@Transient
+	private List<TreeNode> childrenList;
+	@Transient
+	private boolean isExpand;
+
+
+
+
 	@Generated(hash = 1712971580)
 	public Company(int id, String compname, String compcode, String compno,
 			String phoneno, String opuser, String opdate, String compaddress,
@@ -42,9 +57,77 @@ public class Company implements Serializable{
 	@Generated(hash = 1096856789)
 	public Company() {
 	}
-	public int getId() {
-		return this.id;
+
+	@Override
+	public String getParentNodeCode() {
+		return parentcode;
 	}
+
+	@Override
+	public String getNodeCode() {
+		return compcode;
+	}
+
+	@Override
+	public boolean isExpanded() {
+		return isExpand;
+	}
+
+	@Override
+	public void setExpand(boolean isExpand) {
+		this.isExpand = isExpand;
+	}
+
+	@Override
+	public boolean hasChildren() {
+		return childrenList != null && childrenList.size() != 0;
+	}
+
+	@Override
+	public List<TreeNode> getChildrenList() {
+		return childrenList;
+	}
+
+	@Override
+	public void setChildrenList(List<TreeNode> treeNodeList) {
+		this.childrenList = treeNodeList;
+	}
+
+	@Override
+	public int getNodeLevel() {
+		if (compno != null)
+			return compno.split("\\.").length;
+		return 0;
+	}
+
+	@Override
+	public String getLabel() {
+		return compname;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof TreeNode) {
+			return ((TreeNode) obj).getNodeLevel() == getNodeLevel();
+		} else {
+			return super.equals(obj);
+		}
+	}
+
+
+	@Override
+	public int compareTo(@NonNull Object o) {
+		if (o instanceof TreeNode) {
+			return getNodeLevel() - ((TreeNode) o).getNodeLevel();
+		} else {
+			return 0;
+		}
+	}
+
+	public int getId() {
+		return id;
+	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -114,5 +197,7 @@ public class Company implements Serializable{
 	public void setSubCount(int subCount) {
 		this.subCount = subCount;
 	}
-	
+
+
+
 }

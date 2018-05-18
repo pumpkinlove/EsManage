@@ -6,13 +6,6 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <ImageView
-        android:layout_margin="5dp"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/arrow_down_float" />
-
     <TextView
         android:gravity="center_vertical"
         android:id="@+id/tv_company_name"

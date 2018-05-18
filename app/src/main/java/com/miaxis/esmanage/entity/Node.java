@@ -1,7 +1,6 @@
 package com.miaxis.esmanage.entity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Node<T> {
 
@@ -16,6 +15,7 @@ public class Node<T> {
     private int icon;
     private boolean isRoot;
     private boolean isLeaf;
+    private boolean hasChildren;
 
     public Node() {
     }
@@ -112,5 +112,13 @@ public class Node<T> {
 
     public void setLeaf(boolean leaf) {
         isLeaf = leaf;
+    }
+
+    public boolean isHasChildren() {
+        return hasChildren;
+    }
+
+    public void setHasChildren(boolean hasChildren) {
+        this.hasChildren = hasChildren;
     }
 }
