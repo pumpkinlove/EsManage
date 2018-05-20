@@ -10,9 +10,11 @@ import io.reactivex.Observable;
 
 public interface ICompanyModel extends IBaseModel {
 
+    List<Company> findAllLocalComps();
+    List<Company> findLocalCompsByParentCode(String parentCode);
 
     Observable<ResponseEntity> verifyCompany(Config config);
-    List<Company> loadAllCompany();
+
     void saveCompany(List<Company> companyList);
     Observable<ResponseEntity<Company>> downloadCompany(String account, String pwd, Config config);
 

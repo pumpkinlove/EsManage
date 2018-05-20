@@ -3,12 +3,70 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/gray_bg"
     tools:context=".view.fragment.CarListFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srl_car"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Spinner
+                android:id="@+id/sp_company_1"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/common_text_height">
+
+            </Spinner>
+
+            <Spinner
+                android:visibility="invisible"
+                android:id="@+id/sp_company_2"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/common_text_height">
+
+            </Spinner>
+
+            <Spinner
+                android:visibility="invisible"
+                android:id="@+id/sp_company_3"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/common_text_height">
+
+            </Spinner>
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_car"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add_car"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="10dp"
+        android:src="@mipmap/plus"
+        app:borderWidth="0dp"
+        app:elevation="@dimen/common_elevation"
+        app:fabSize="auto"
+        app:pressedTranslationZ="@dimen/activity_padding"
+        app:rippleColor="@color/white"
+        app:useCompatPadding="true" />
+
 
 </FrameLayout>

@@ -21,7 +21,7 @@ public class ConfigModel implements IConfigModel {
 
     @Override
     public boolean saveConfig(Config config) {
-        long id =  configDao.insertOrReplace(config);
+        long id = configDao.insertOrReplace(config);
         return id == 1L;
     }
 }

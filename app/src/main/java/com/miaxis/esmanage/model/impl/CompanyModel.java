@@ -34,8 +34,13 @@ public class CompanyModel implements ICompanyModel {
     }
 
     @Override
-    public List<Company> loadAllCompany() {
+    public List<Company> findAllLocalComps() {
         return companyDao.loadAll();
+    }
+
+    @Override
+    public List<Company> findLocalCompsByParentCode(String parentCode) {
+        return companyDao.queryBuilder().where(CompanyDao.Properties.Parentcode.eq(parentCode)).list();
     }
 
     @Override

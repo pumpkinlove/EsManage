@@ -4,6 +4,7 @@ import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.StrictMode;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.miaxis.esmanage.model.local.greenDao.GreenDaoContext;
 import com.miaxis.esmanage.model.local.greenDao.gen.DaoMaster;
 import com.miaxis.esmanage.model.local.greenDao.gen.DaoSession;
@@ -20,10 +21,7 @@ public class EsManageApp extends Application {
     public void onCreate() {
         super.onCreate();
         app = this;
-        // android 7.0系统解决拍照的问题
-        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-        StrictMode.setVmPolicy(builder.build());
-        builder.detectFileUriExposure();
+        Fresco.initialize(this);
         initDbHelp();
     }
 

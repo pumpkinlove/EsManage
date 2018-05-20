@@ -7,12 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.miaxis.esmanage.view.IBaseView;
 import com.trello.rxlifecycle2.components.support.RxFragment;
+
+import java.util.Objects;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public abstract class BaseFragment extends RxFragment {
+public abstract class BaseFragment extends RxFragment implements IBaseView {
 
     protected Context context;
     private Unbinder unbinder;
@@ -42,6 +46,15 @@ public abstract class BaseFragment extends RxFragment {
     public void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+    }
+
+
+    @Override
+    public void alert(String message) {
+        MaterialDialog dialog = new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
+                .content(message)
+                .build();
+        dialog.show();
     }
 
 }

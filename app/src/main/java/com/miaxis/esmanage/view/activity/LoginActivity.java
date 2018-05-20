@@ -80,14 +80,6 @@ public class LoginActivity extends BaseActivity implements ILoginView, ConfigFra
     }
 
     @Override
-    public void alert(String message) {
-        MaterialDialog dialog = new MaterialDialog.Builder(this)
-                .content(message)
-                .build();
-        dialog.show();
-    }
-
-    @Override
     public void onLoginSuccess() {
         Intent iToMain = new Intent(this, MainActivity.class);
         startActivity(iToMain);
@@ -125,9 +117,10 @@ public class LoginActivity extends BaseActivity implements ILoginView, ConfigFra
 
     @OnClick(R.id.btn_login)
     void onLoginClick() {
+        onLoginSuccess();
         String account = etUsername.getText().toString().trim();
         String pwd = etPassword.getText().toString().trim();
-        loginPresenter.doLogin(account, pwd);
+//        loginPresenter.doLogin(account, pwd);
     }
 
     @Override

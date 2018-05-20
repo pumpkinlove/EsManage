@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/gray_bg"
     tools:context=".view.fragment.EscortListFragment">
 
@@ -25,6 +26,7 @@
             </Spinner>
 
             <Spinner
+                android:visibility="invisible"
                 android:id="@+id/sp_company_2"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -33,6 +35,7 @@
             </Spinner>
 
             <Spinner
+                android:visibility="invisible"
                 android:id="@+id/sp_company_3"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -42,15 +45,28 @@
 
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/lv_escort"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_escort"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        </ListView>
-
-
+        </android.support.v7.widget.RecyclerView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add_escort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="10dp"
+        android:src="@mipmap/plus"
+        app:borderWidth="0dp"
+        app:elevation="@dimen/common_elevation"
+        app:fabSize="auto"
+        app:pressedTranslationZ="@dimen/activity_padding"
+        app:rippleColor="@color/white"
+        app:useCompatPadding="true" />
+
 
 </FrameLayout>

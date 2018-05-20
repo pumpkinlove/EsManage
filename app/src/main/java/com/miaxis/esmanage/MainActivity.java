@@ -32,10 +32,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
     private MainFragmentAdapter adapter;
 
-    private EscortListFragment upTaskFragment;
-    private CarListFragment myTaskFragment;
-    private SystemFragment systemFragment;
-
     private MenuItem menuItem;
 
     @Override
@@ -46,11 +42,11 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     @Override
     protected void initData() {
         List<Fragment> fragmentList = new ArrayList<>();
-        upTaskFragment = new EscortListFragment();
+        EscortListFragment upTaskFragment = new EscortListFragment();
         fragmentList.add(upTaskFragment);
-        myTaskFragment = new CarListFragment();
+        CarListFragment myTaskFragment = new CarListFragment();
         fragmentList.add(myTaskFragment);
-        systemFragment = new SystemFragment();
+        SystemFragment systemFragment = new SystemFragment();
         fragmentList.add(systemFragment);
         adapter = new MainFragmentAdapter(getSupportFragmentManager(), fragmentList);
     }
@@ -101,5 +97,15 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 break;
         }
         return false;
+    }
+
+    @Override
+    public void showLoading(String message) {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
     }
 }
