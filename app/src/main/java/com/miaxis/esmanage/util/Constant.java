@@ -9,8 +9,9 @@ public class Constant {
     public static final int MODE_VIEW = 1003;
 
 
-    public static final String INTENT_ESCORT_DETAIL_OP = "INTENT_ESCORT_DETAIL_OP";
+    public static final String INTENT_DETAIL_OP = "INTENT_DETAIL_OP";
     public static final String INTENT_ESCORT_DETAIL_ESCORT = "INTENT_ESCORT_DETAIL_ESCORT";
+    public static final String INTENT_ESCORT_DETAIL_CAR = "INTENT_ESCORT_DETAIL_CAR";
 
     public static final int REQUEST_CODE_GET_FINGER = 1992;
     public static final String INTENT_EXTRA_FINGER_DATA = "INTENT_EXTRA_FINGER_DATA";

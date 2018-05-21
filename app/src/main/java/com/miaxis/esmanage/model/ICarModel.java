@@ -15,5 +15,10 @@ public interface ICarModel extends IBaseModel {
     Observable<ResponseEntity<Car>> downCarByCompId(Integer compId, Config config);
     Observable<ResponseEntity> delCar(Car car, Config config);
     Observable<ResponseEntity> addCar(Car car, Config config);
+    Observable<ResponseEntity> modCar(Car car, Config config);
+
+    void delCarFromLocal(Car car);
+    void saveCarLocal(Car car);
+    void saveCarListLocal(List<Car> carList);
 
 }

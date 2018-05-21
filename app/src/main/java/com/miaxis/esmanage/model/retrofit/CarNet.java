@@ -17,9 +17,15 @@ import retrofit2.http.Query;
 public interface CarNet {
     @GET("yygl/api/downCarByCompId")
     Observable<ResponseEntity<Car>> downCarByCompId(@Query("compId") Integer compId);
+
     @GET("yygl/api/delCar")
     Observable<ResponseEntity> delCar(@Query("jsonCar") String jsonCar);
+
     @Multipart
     @POST("yygl/api/addCar")
     Observable<ResponseEntity> addCar(@Query("jsonCar") String jsonCar, @Part MultipartBody.Part file);
+
+    @Multipart
+    @POST("yygl/api/modCar")
+    Observable<ResponseEntity> modCar(@Query("jsonCar") String jsonCar, @Part MultipartBody.Part file);
 }

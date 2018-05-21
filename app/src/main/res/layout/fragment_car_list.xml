@@ -23,6 +23,7 @@
                 android:layout_height="wrap_content">
 
                 <Spinner
+                    style="@style/style_comp_spinner"
                     android:id="@+id/sp_company_1"
                     android:layout_weight="1"
                     android:layout_width="0dp"
@@ -31,6 +32,7 @@
                 </Spinner>
 
                 <Spinner
+                    style="@style/style_comp_spinner"
                     android:visibility="invisible"
                     android:id="@+id/sp_company_2"
                     android:layout_weight="1"
@@ -40,6 +42,7 @@
                 </Spinner>
 
                 <Spinner
+                    style="@style/style_comp_spinner"
                     android:visibility="invisible"
                     android:id="@+id/sp_company_3"
                     android:layout_weight="1"

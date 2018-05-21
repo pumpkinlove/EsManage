@@ -12,22 +12,30 @@
         fresco:placeholderImage="@mipmap/default_head"
         android:background="@drawable/table_stroke_bg"
         android:padding="2dp"
-        android:layout_width="55dp"
-        android:layout_height="55dp" />
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
 
     <LinearLayout
+        android:orientation="vertical"
         android:background="@drawable/white_btn_bg"
         android:focusable="true"
         android:clickable="true"
         android:id="@+id/ll_escort"
         android:layout_weight="1"
         android:layout_width="0dp"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <TextView
+            android:gravity="center_vertical"
             android:id="@+id/tv_escort_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="match_parent"
+            android:layout_height="35dp" />
+
+        <TextView
+            android:gravity="center_vertical"
+            android:id="@+id/tv_escort_code"
+            android:layout_width="match_parent"
+            android:layout_height="25dp" />
 
     </LinearLayout>
 

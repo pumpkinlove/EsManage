@@ -4,18 +4,16 @@ import android.annotation.SuppressLint;
 import android.text.TextUtils;
 
 import com.device.Device;
+import com.miaxis.esmanage.entity.Car;
 import com.miaxis.esmanage.entity.Config;
-import com.miaxis.esmanage.entity.Escort;
+import com.miaxis.esmanage.model.ICarModel;
 import com.miaxis.esmanage.model.IConfigModel;
-import com.miaxis.esmanage.model.IEscortModel;
+import com.miaxis.esmanage.model.impl.CarModel;
 import com.miaxis.esmanage.model.impl.ConfigModel;
-import com.miaxis.esmanage.model.impl.EscortModel;
 import com.miaxis.esmanage.model.retrofit.ResponseEntity;
-import com.miaxis.esmanage.presenter.IEscortDetailPresenter;
+import com.miaxis.esmanage.presenter.ICarDetailPresenter;
 import com.miaxis.esmanage.util.Constant;
-import com.miaxis.esmanage.view.IEscortDetailView;
-
-import java.util.Iterator;
+import com.miaxis.esmanage.view.ICarDetailView;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -26,43 +24,36 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 @SuppressLint("CheckResult")
-public class EscortDetailPresenter implements IEscortDetailPresenter {
+public class CarDetailPresenter implements ICarDetailPresenter {
 
-    private IEscortDetailView detailView;
-    private IEscortModel escortModel;
+    private ICarDetailView detailView;
+    private ICarModel carModel;
     private IConfigModel configModel;
 
-    public EscortDetailPresenter(IEscortDetailView detailView) {
+    public CarDetailPresenter(ICarDetailView detailView) {
         this.detailView = detailView;
-        escortModel = new EscortModel();
+        carModel = new CarModel();
         configModel = new ConfigModel();
+
     }
 
     @Override
-    public void addEscort(final Escort escort) {
+    public void addCar(Car car) {
         Observable
-                .just(escort)
-                .doOnNext(new Consumer<Escort>() {
+                .just(car)
+                .doOnNext(new Consumer<Car>() {
                     @Override
-                    public void accept(Escort escort) throws Exception {
-                        detailView.showLoading("正在保存押运员信息...");
+                    public void accept(Car car) throws Exception {
+                        detailView.showLoading("正在保存车辆信息...");
                     }
                 })
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(Schedulers.io())
-                .flatMap(new Function<Escort, ObservableSource<ResponseEntity>>() {
+                .flatMap(new Function<Car, ObservableSource<ResponseEntity>>() {
                     @Override
-                    public ObservableSource<ResponseEntity> apply(Escort escort) throws Exception {
+                    public ObservableSource<ResponseEntity> apply(Car car) throws Exception {
                         Config config = configModel.loadConfig();
-                        return escortModel.addEscort(escort, config);
-                    }
-                })
-                .doOnNext(new Consumer<ResponseEntity>() {
-                    @Override
-                    public void accept(ResponseEntity resp) throws Exception {
-                        if (TextUtils.equals(Constant.SUCCESS, resp.getCode())) {
-                            escortModel.saveEscortLocal(escort);
-                        }
+                        return carModel.addCar(car, config);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -88,29 +79,29 @@ public class EscortDetailPresenter implements IEscortDetailPresenter {
     }
 
     @Override
-    public void delEscort(final Escort escort) {
+    public void delCar(final Car car) {
         Observable
-                .just(escort)
-                .doOnNext(new Consumer<Escort>() {
+                .just(car)
+                .doOnNext(new Consumer<Car>() {
                     @Override
-                    public void accept(Escort escort) throws Exception {
-                        detailView.showLoading("正在删除押运员信息...");
+                    public void accept(Car car) throws Exception {
+                        detailView.showLoading("正在删除车辆信息...");
                     }
                 })
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(Schedulers.io())
-                .flatMap(new Function<Escort, ObservableSource<ResponseEntity>>() {
+                .flatMap(new Function<Car, ObservableSource<ResponseEntity>>() {
                     @Override
-                    public ObservableSource<ResponseEntity> apply(Escort escort) throws Exception {
+                    public ObservableSource<ResponseEntity> apply(Car car) throws Exception {
                         Config config = configModel.loadConfig();
-                        return escortModel.delEscort(escort, config);
+                        return carModel.delCar(car, config);
                     }
                 })
                 .doOnNext(new Consumer<ResponseEntity>() {
                     @Override
                     public void accept(ResponseEntity resp) throws Exception {
                         if (TextUtils.equals(Constant.SUCCESS, resp.getCode())) {
-                            escortModel.delEscortLocal(escort);
+                            carModel.delCarFromLocal(car);
                         }
                     }
                 })
@@ -137,29 +128,29 @@ public class EscortDetailPresenter implements IEscortDetailPresenter {
     }
 
     @Override
-    public void modEscort(final Escort escort) {
+    public void modCar(final Car car) {
         Observable
-                .just(escort)
-                .doOnNext(new Consumer<Escort>() {
+                .just(car)
+                .doOnNext(new Consumer<Car>() {
                     @Override
-                    public void accept(Escort escort) throws Exception {
-                        detailView.showLoading("正在保存押运员信息...");
+                    public void accept(Car car) throws Exception {
+                        detailView.showLoading("正在删除车辆信息...");
                     }
                 })
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(Schedulers.io())
-                .flatMap(new Function<Escort, ObservableSource<ResponseEntity>>() {
+                .flatMap(new Function<Car, ObservableSource<ResponseEntity>>() {
                     @Override
-                    public ObservableSource<ResponseEntity> apply(Escort escort) throws Exception {
+                    public ObservableSource<ResponseEntity> apply(Car car) throws Exception {
                         Config config = configModel.loadConfig();
-                        return escortModel.addEscort(escort, config);
+                        return carModel.modCar(car, config);
                     }
                 })
                 .doOnNext(new Consumer<ResponseEntity>() {
                     @Override
                     public void accept(ResponseEntity resp) throws Exception {
                         if (TextUtils.equals(Constant.SUCCESS, resp.getCode())) {
-                            escortModel.saveEscortLocal(escort);
+                            carModel.delCarFromLocal(car);
                         }
                     }
                 })
@@ -171,19 +162,78 @@ public class EscortDetailPresenter implements IEscortDetailPresenter {
                         if (TextUtils.equals(Constant.SUCCESS, resp.getCode())) {
                             detailView.onSaveSuccess();
                         } else if (TextUtils.equals(Constant.FAILURE, resp.getCode())) {
-                            detailView.alert("保存失败！\r\n" + resp.getMessage());
+                            detailView.alert("删除失败！\r\n" + resp.getMessage());
                         } else {
-                            detailView.alert("保存失败！");
+                            detailView.alert("删除失败！");
                         }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         detailView.hideLoading();
-                        detailView.alert("保存失败！\r\n" + throwable.getMessage());
+                        detailView.alert("删除失败！\r\n" + throwable.getMessage());
                     }
                 });
     }
 
+    @Override
+    public void getRfid() {
+        Observable
+                .create(new ObservableOnSubscribe<String>() {
+                    @Override
+                    public void subscribe(ObservableEmitter<String> e) throws Exception {
+                        byte[] message = new byte[200];
+                        Device.openFinger(message);
+                        Device.openRfid(message);
+                        Thread.sleep(1000);
+                        detailView.showLoading("正在扫描RFID...");
+                        e.onNext("");
+                    }
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.newThread())
+                .map(new Function<String, String>() {
+                    @Override
+                    public String apply(String s) throws Exception {
+                        while (true) {
+                            try {
+                                Thread.sleep(100);
+                            }
+                            catch (InterruptedException e) {
+                            }
+                            byte[] tids = new byte[20000];
+                            byte[] epcids = new byte[20000];
+                            byte[] message = new byte[200];
+                            int result = Device.getRfid(1000, tids, epcids, message);
+                            if (result == -3) {
+                                throw new Exception("取消扫描！");
+                            }
+                            if (result != 0) {
+                                continue;
+                            }
+                            String rfids = new String(epcids).trim();
+                            String[] rfidArr = rfids.split(",");
+                            if (rfidArr.length == 0) {
+                                continue;
+                            }
+                            return rfidArr[0];
+                        }
+                    }
 
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        detailView.hideLoading();
+                        detailView.showRfid(s);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        detailView.hideLoading();
+                        detailView.alert("扫描RFID失败！\r\n" + throwable.getMessage());
+                    }
+                });
+    }
 }

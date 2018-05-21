@@ -30,7 +30,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.miaxis.esmanage.util.Constant.INTENT_ESCORT_DETAIL_ESCORT;
-import static com.miaxis.esmanage.util.Constant.INTENT_ESCORT_DETAIL_OP;
+import static com.miaxis.esmanage.util.Constant.INTENT_DETAIL_OP;
 import static com.miaxis.esmanage.util.Constant.REQUEST_CODE_GET_FINGER;
 
 public class EscortDetailActivity extends BaseActivity implements IEscortDetailView {
@@ -78,7 +78,7 @@ public class EscortDetailActivity extends BaseActivity implements IEscortDetailV
     @Override
     protected void initData() {
         presenter = new EscortDetailPresenter(this);
-        mode = getIntent().getIntExtra(INTENT_ESCORT_DETAIL_OP, -1);
+        mode = getIntent().getIntExtra(INTENT_DETAIL_OP, -1);
         switch (mode) {
             case Constant.MODE_ADD:
                 escort = new Escort();
@@ -130,33 +130,39 @@ public class EscortDetailActivity extends BaseActivity implements IEscortDetailV
                 toolbar.setTitle("新增押运员");
                 break;
             case Constant.MODE_VIEW:
-//                toolbar.setTitle(escort.getEsname());
+                toolbar.setTitle(escort.getEsname());
                 setEditable(false);
                 break;
         }
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         bottomMenu = new BottomMenu(this, menuListener);
+        updateEscortInfo(escort);
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         menu.clear();
+        getMenuInflater().inflate(R.menu.menu_op, menu);
         switch (mode) {
             case -1:
                 break;
             case Constant.MODE_ADD:
-                getMenuInflater().inflate(R.menu.menu_save, menu);
-                break;
-            case Constant.MODE_MOD:
-                getMenuInflater().inflate(R.menu.menu_save, menu);
+                toolbar.setTitle("新增押运员");
+                toolbar.getMenu().findItem(R.id.action_save).setVisible(true);
+                toolbar.getMenu().findItem(R.id.action_mod).setVisible(false);
+                toolbar.getMenu().findItem(R.id.action_del).setVisible(false);
                 break;
             case Constant.MODE_VIEW:
-                getMenuInflater().inflate(R.menu.menu_view, menu);
+                toolbar.setTitle(escort.getEsname());
+                toolbar.getMenu().findItem(R.id.action_save).setVisible(false);
+                toolbar.getMenu().findItem(R.id.action_mod).setVisible(true);
+                toolbar.getMenu().findItem(R.id.action_del).setVisible(true);
+                setEditable(false);
                 break;
         }
-        return true;
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -169,14 +175,18 @@ public class EscortDetailActivity extends BaseActivity implements IEscortDetailV
                 if (mode == Constant.MODE_ADD) {
                     addEscort();
                 } else if (mode == Constant.MODE_MOD) {
-
+                    modEscort();
                 }
                 break;
             case R.id.action_mod:
                 mode = Constant.MODE_MOD;
+                toolbar.getMenu().findItem(R.id.action_save).setVisible(true);
+                toolbar.getMenu().findItem(R.id.action_mod).setVisible(false);
+                toolbar.getMenu().findItem(R.id.action_del).setVisible(false);
                 setEditable(true);
                 break;
             case R.id.action_del:
+                delEscort();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -274,6 +284,9 @@ public class EscortDetailActivity extends BaseActivity implements IEscortDetailV
             case Constant.MODE_MOD:
                 alert("保存成功！");
                 setEditable(false);
+                toolbar.getMenu().findItem(R.id.action_save).setVisible(false);
+                toolbar.getMenu().findItem(R.id.action_mod).setVisible(true);
+                toolbar.getMenu().findItem(R.id.action_del).setVisible(true);
                 break;
         }
     }
@@ -305,6 +318,20 @@ public class EscortDetailActivity extends BaseActivity implements IEscortDetailV
         escort.setPhoneno(etEscortPhone.getText().toString().trim());
         escort.setOpusername(tvEscortOperator.getText().toString().trim());
         presenter.addEscort(escort);
+    }
+
+    private void modEscort() {
+        escort.setEsname(etEscortName.getText().toString().trim());
+        escort.setEscode(etEscortCode.getText().toString().trim());
+        escort.setCompname(tvEscortComp.getText().toString().trim());
+        escort.setIdcard(etEscortIdCard.getText().toString().trim());
+        escort.setPhoneno(etEscortPhone.getText().toString().trim());
+        escort.setOpusername(tvEscortOperator.getText().toString().trim());
+        presenter.addEscort(escort);
+    }
+
+    private void delEscort() {
+        presenter.delEscort(escort);
     }
 
 }

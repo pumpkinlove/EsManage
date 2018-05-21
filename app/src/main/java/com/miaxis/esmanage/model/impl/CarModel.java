@@ -9,10 +9,15 @@ import com.miaxis.esmanage.model.ICarModel;
 import com.miaxis.esmanage.model.local.greenDao.gen.CarDao;
 import com.miaxis.esmanage.model.retrofit.CarNet;
 import com.miaxis.esmanage.model.retrofit.ResponseEntity;
+import com.miaxis.esmanage.util.CommonUtil;
 
+import java.io.File;
 import java.util.List;
 
 import io.reactivex.Observable;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -59,7 +64,38 @@ public class CarModel implements ICarModel {
                 .baseUrl("http://" + config.getIp() + ":" + config.getPort())
                 .build();
         CarNet carNet = retrofit.create(CarNet.class);
-        // TODO: 2018/5/21 0021
-        return carNet.addCar(new Gson().toJson(car), null);
+        File file = new File(car.getCarphoto());
+        RequestBody requestBody = RequestBody.create(MediaType.parse(CommonUtil.getMimeType(car.getCarphoto())), file);
+        MultipartBody.Part part = MultipartBody.Part.createFormData("image", file.getName(), requestBody);
+        return carNet.addCar(new Gson().toJson(car), part);
+    }
+
+    @Override
+    public Observable<ResponseEntity> modCar(Car car, Config config) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())//请求的结果转为实体类
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())  //适配RxJava2.0, RxJava1.x则为RxJavaCallAdapterFactory.create()
+                .baseUrl("http://" + config.getIp() + ":" + config.getPort())
+                .build();
+        CarNet carNet = retrofit.create(CarNet.class);
+        File file = new File(car.getCarphoto());
+        RequestBody requestBody = RequestBody.create(MediaType.parse(CommonUtil.getMimeType(car.getCarphoto())), file);
+        MultipartBody.Part part = MultipartBody.Part.createFormData("image", file.getName(), requestBody);
+        return carNet.modCar(new Gson().toJson(car), part);
+    }
+
+    @Override
+    public void delCarFromLocal(Car car) {
+        carDao.delete(car);
+    }
+
+    @Override
+    public void saveCarLocal(Car car) {
+        carDao.insertOrReplace(car);
+    }
+
+    @Override
+    public void saveCarListLocal(List<Car> carList) {
+        carDao.insertOrReplaceInTx(carList);
     }
 }

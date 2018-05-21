@@ -18,4 +18,8 @@ public interface IEscortModel extends IBaseModel {
     Observable<ResponseEntity> delEscort(Escort escort, Config config);
     Observable<ResponseEntity> addEscort(Escort escort, Config config) throws UnsupportedEncodingException;
 
+    void saveEscortListLocal(List<Escort> escortList);
+    void saveEscortLocal(Escort escort);
+    void delEscortLocal(Escort escort);
+
 }

@@ -152,7 +152,7 @@ public class EscortListFragment extends BaseFragment implements IEscortListView 
             public void onRecyclerItemClick(View view, Object data, int position) {
                 Intent i = new Intent(getContext(), EscortDetailActivity.class);
                 i.putExtra(Constant.INTENT_ESCORT_DETAIL_ESCORT, (Escort)data);
-                i.putExtra(Constant.INTENT_ESCORT_DETAIL_OP, Constant.MODE_VIEW);
+                i.putExtra(Constant.INTENT_DETAIL_OP, Constant.MODE_VIEW);
                 startActivity(i);
             }
         });
@@ -214,7 +214,7 @@ public class EscortListFragment extends BaseFragment implements IEscortListView 
     @OnClick(R.id.fab_add_escort)
     void onAddEscort() {
         Intent i = new Intent(getContext(), EscortDetailActivity.class);
-        i.putExtra(Constant.INTENT_ESCORT_DETAIL_OP, Constant.MODE_ADD);
+        i.putExtra(Constant.INTENT_DETAIL_OP, Constant.MODE_ADD);
         startActivity(i);
     }
 

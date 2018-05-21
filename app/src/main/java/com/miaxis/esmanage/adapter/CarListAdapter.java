@@ -24,11 +24,11 @@ public class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.ViewHold
     private List<Car> carList;
     private onRecyclerItemClickerListener mListener;
 
-    public List<Car> getEscortList() {
+    public List<Car> getCarList() {
         return carList;
     }
 
-    public void setEscortList(List<Car> carList) {
+    public void setCarList(List<Car> carList) {
         this.carList = carList;
     }
 

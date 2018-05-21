@@ -18,11 +18,12 @@ import com.miaxis.esmanage.adapter.CompanySelAdapter;
 import com.miaxis.esmanage.adapter.EscortListAdapter;
 import com.miaxis.esmanage.entity.Car;
 import com.miaxis.esmanage.entity.Company;
+import com.miaxis.esmanage.entity.Escort;
 import com.miaxis.esmanage.presenter.ICarManagePresenter;
-import com.miaxis.esmanage.presenter.IEscortManagePresenter;
 import com.miaxis.esmanage.presenter.impl.CarManagePresenter;
-import com.miaxis.esmanage.presenter.impl.EscortManagePresenter;
+import com.miaxis.esmanage.util.Constant;
 import com.miaxis.esmanage.view.ICarManageView;
+import com.miaxis.esmanage.view.activity.CarDetailActivity;
 import com.miaxis.esmanage.view.activity.EscortDetailActivity;
 
 import java.util.List;
@@ -44,7 +45,7 @@ public class CarListFragment extends BaseFragment implements ICarManageView {
     @BindView(R.id.sp_company_3)
     Spinner spCompany3;
     @BindView(R.id.fab_add_car)
-    FloatingActionButton fabAddEscort;
+    FloatingActionButton fabAddCar;
 
     private CompanySelAdapter adapter1;
     private CompanySelAdapter adapter2;
@@ -147,6 +148,16 @@ public class CarListFragment extends BaseFragment implements ICarManageView {
 
         rvCar.setAdapter(listAdapter);
         rvCar.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        listAdapter.setItemListener(new CarListAdapter.onRecyclerItemClickerListener() {
+            @Override
+            public void onRecyclerItemClick(View view, Object data, int position) {
+                Intent i = new Intent(getContext(), EscortDetailActivity.class);
+                i.putExtra(Constant.INTENT_ESCORT_DETAIL_CAR, (Car)data);
+                i.putExtra(Constant.INTENT_DETAIL_OP, Constant.MODE_VIEW);
+                startActivity(i);
+            }
+        });
     }
 
     @Override
@@ -182,7 +193,7 @@ public class CarListFragment extends BaseFragment implements ICarManageView {
 
     @Override
     public void showCartList(List<Car> carList) {
-        listAdapter.setEscortList(carList);
+        listAdapter.setCarList(carList);
         listAdapter.notifyDataSetChanged();
     }
 
@@ -203,9 +214,10 @@ public class CarListFragment extends BaseFragment implements ICarManageView {
     }
 
     @OnClick(R.id.fab_add_car)
-    void onAddEscort() {
-        startActivity(new Intent(getContext(), EscortDetailActivity.class));
+    void onAddCar() {
+        Intent i = new Intent(getContext(), CarDetailActivity.class);
+        i.putExtra(Constant.INTENT_DETAIL_OP, Constant.MODE_ADD);
+        startActivity(i);
     }
-
 
 }

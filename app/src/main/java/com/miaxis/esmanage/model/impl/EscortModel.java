@@ -72,4 +72,19 @@ public class EscortModel implements IEscortModel {
         MultipartBody.Part part = MultipartBody.Part.createFormData("image", file.getName(), requestBody);
         return escortNet.addEscort(new Gson().toJson(escort), part);
     }
+
+    @Override
+    public void saveEscortListLocal(List<Escort> escortList) {
+        escortDao.insertOrReplaceInTx(escortList);
+    }
+
+    @Override
+    public void saveEscortLocal(Escort escort) {
+        escortDao.insertOrReplace(escort);
+    }
+
+    @Override
+    public void delEscortLocal(Escort escort) {
+        escortDao.delete(escort);
+    }
 }

@@ -32,7 +32,7 @@
                 android:layout_height="match_parent">
 
                 <EditText
-                    android:id="@+id/et_escort_name"
+                    android:id="@+id/et_car_plate_no"
                     android:hint="车牌号"
                     style="@style/style_table_input"
                     android:textSize="22sp"
@@ -46,7 +46,7 @@
                     android:layout_height="1px"/>
 
                 <EditText
-                    android:id="@+id/et_escort_code"
+                    android:id="@+id/et_car_code"
                     android:hint="编号"
                     style="@style/style_table_input"
                     android:layout_width="match_parent"
@@ -62,11 +62,11 @@
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:layout_margin="5dp"
-                fresco:placeholderImage="@mipmap/default_head"
+                fresco:placeholderImage="@mipmap/default_car"
                 android:layout_gravity="center"
                 android:focusable="true"
                 android:clickable="true"
-                android:id="@+id/sdv_escort"
+                android:id="@+id/sdv_car"
                 android:layout_width="110dp"
                 android:layout_height="110dp" />
 
@@ -84,7 +84,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/tv_escort_finger0"
+                android:id="@+id/tv_car_rfid"
                 android:focusable="true"
                 android:clickable="true"
                 android:background="@drawable/white_btn_bg"
@@ -95,7 +95,7 @@
                 android:layout_height="@dimen/common_text_height"
                 android:layout_weight="1"
                 android:drawablePadding="10dp"
-                android:text="RFID" />
+                android:hint="点击获取 RFID" />
 
         </LinearLayout>
 
@@ -124,37 +124,18 @@
                 android:gravity="center"
                 android:clickable="true"
                 android:focusable="true"
-                android:id="@+id/tv_escort_comp"
+                android:id="@+id/tv_car_comp"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/common_text_height"
                 android:layout_weight="2.5" />
 
         </LinearLayout>
 
-        <View
-            android:background="@color/gray_light"
-            android:layout_width="match_parent"
-            android:layout_height="1px"/>
-
 
         <View
-            android:background="@color/gray_light"
-            android:layout_width="match_parent"
-            android:layout_height="1px"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:background="@drawable/table_stroke_bg"
-        android:id="@+id/ll_other_info"
+        android:background="@color/gray_light"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/ll_input_info">
+        android:layout_height="1px"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -173,7 +154,36 @@
                 android:layout_height="match_parent"/>
 
             <TextView
-                android:id="@+id/tv_escort_operator"
+                android:id="@+id/tv_car_operator"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/common_text_height"
+                android:layout_weight="2.5" />
+
+        </LinearLayout>
+
+        <View
+            android:background="@color/gray_light"
+            android:layout_width="match_parent"
+            android:layout_height="1px"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/style_table_text"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/common_text_height"
+                android:layout_weight="1"
+                android:text="备注" />
+
+            <View
+                android:background="@color/gray_light"
+                android:layout_width="1px"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:id="@+id/tv_car_remark"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/common_text_height"
                 android:layout_weight="2.5" />
@@ -181,6 +191,7 @@
         </LinearLayout>
 
     </LinearLayout>
+
 
 
 

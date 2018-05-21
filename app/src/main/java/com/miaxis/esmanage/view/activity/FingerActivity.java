@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.device.Device;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.miaxis.esmanage.R;
 import com.miaxis.esmanage.presenter.IFingerPresenter;
@@ -16,7 +17,10 @@ import com.miaxis.esmanage.presenter.impl.FingerPresenter;
 import com.miaxis.esmanage.util.Constant;
 import com.miaxis.esmanage.view.IFingerView;
 
+import java.util.Objects;
+
 import butterknife.BindView;
+import butterknife.OnClick;
 
 import static com.miaxis.esmanage.util.Constant.INTENT_EXTRA_FINGER_DATA;
 
@@ -49,6 +53,7 @@ public class FingerActivity extends BaseActivity implements IFingerView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                Device.cancel();
                 finish();
                 break;
         }
@@ -63,8 +68,11 @@ public class FingerActivity extends BaseActivity implements IFingerView {
 
     @Override
     protected void initView() {
-
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        toolbar.setTitle("采集指纹");
     }
+
 
     @Override
     public void showLoading(String message) {
@@ -89,6 +97,11 @@ public class FingerActivity extends BaseActivity implements IFingerView {
         i.putExtra(Constant.INTENT_EXTRA_FINGER_POSITION, fingerPosition);
         setResult(Constant.REQUEST_CODE_GET_FINGER, i);
         finish();
+    }
+
+    @OnClick(R.id.btn_cancel)
+    void onCancel() {
+        Device.cancel();
     }
 
 }

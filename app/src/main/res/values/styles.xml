@@ -101,4 +101,9 @@
         <item name="android:windowExitAnimation">@anim/ppwindow_hide_anim</item>
     </style>
 
+    <style name="style_comp_spinner">
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/white_et_bg</item>
+    </style>
+
 </resources>
