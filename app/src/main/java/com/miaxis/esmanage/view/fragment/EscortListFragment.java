@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,6 +19,7 @@ import com.miaxis.esmanage.entity.Company;
 import com.miaxis.esmanage.entity.Escort;
 import com.miaxis.esmanage.presenter.IEscortManagePresenter;
 import com.miaxis.esmanage.presenter.impl.EscortManagePresenter;
+import com.miaxis.esmanage.util.Constant;
 import com.miaxis.esmanage.view.IEscortListView;
 import com.miaxis.esmanage.view.activity.EscortDetailActivity;
 
@@ -90,7 +92,7 @@ public class EscortListFragment extends BaseFragment implements IEscortListView 
                 if (companies != null) {
                     curCompId = companies.get(position).getId();
                     presenter.loadCompany2(companies.get(position).getCompcode());
-//                    presenter.loadEscortsByCompanyId(curCompId);
+                    presenter.loadEscortsByCompanyId(curCompId);
                 }
             }
 
@@ -108,7 +110,7 @@ public class EscortListFragment extends BaseFragment implements IEscortListView 
                 if (companies != null) {
                     curCompId = companies.get(position).getId();
                     presenter.loadCompany3(companies.get(position).getCompcode());
-//                    presenter.loadEscortsByCompanyId(curCompId);
+                    presenter.loadEscortsByCompanyId(curCompId);
                 }
             }
 
@@ -125,7 +127,7 @@ public class EscortListFragment extends BaseFragment implements IEscortListView 
                 List<Company> companies = adapter3.getCompanyList();
                 if (companies != null) {
                     curCompId = companies.get(position).getId();
-//                    presenter.loadEscortsByCompanyId(curCompId);
+                    presenter.loadEscortsByCompanyId(curCompId);
                 }
             }
 
@@ -141,6 +143,20 @@ public class EscortListFragment extends BaseFragment implements IEscortListView 
                 presenter.loadEscortsByCompanyId(curCompId);
             }
         });
+
+        rvEscort.setAdapter(listAdapter);
+        rvEscort.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        listAdapter.setItemListener(new EscortListAdapter.onRecyclerItemClickerListener() {
+            @Override
+            public void onRecyclerItemClick(View view, Object data, int position) {
+                Intent i = new Intent(getContext(), EscortDetailActivity.class);
+                i.putExtra(Constant.INTENT_ESCORT_DETAIL_ESCORT, (Escort)data);
+                i.putExtra(Constant.INTENT_ESCORT_DETAIL_OP, Constant.MODE_VIEW);
+                startActivity(i);
+            }
+        });
+
     }
 
     @Override
@@ -197,7 +213,9 @@ public class EscortListFragment extends BaseFragment implements IEscortListView 
 
     @OnClick(R.id.fab_add_escort)
     void onAddEscort() {
-        startActivity(new Intent(getContext(), EscortDetailActivity.class));
+        Intent i = new Intent(getContext(), EscortDetailActivity.class);
+        i.putExtra(Constant.INTENT_ESCORT_DETAIL_OP, Constant.MODE_ADD);
+        startActivity(i);
     }
 
 

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
@@ -61,7 +62,6 @@ public class CarListFragment extends BaseFragment implements ICarManageView {
         // Required empty public constructor
     }
 
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -93,7 +93,7 @@ public class CarListFragment extends BaseFragment implements ICarManageView {
                 if (companies != null) {
                     curCompId = companies.get(position).getId();
                     presenter.loadCompany2(companies.get(position).getCompcode());
-//                    presenter.loadEscortsByCompanyId(curCompId);
+                    presenter.loadCarByCompanyId(curCompId);
                 }
             }
 
@@ -111,7 +111,7 @@ public class CarListFragment extends BaseFragment implements ICarManageView {
                 if (companies != null) {
                     curCompId = companies.get(position).getId();
                     presenter.loadCompany3(companies.get(position).getCompcode());
-//                    presenter.loadEscortsByCompanyId(curCompId);
+                    presenter.loadCarByCompanyId(curCompId);
                 }
             }
 
@@ -128,7 +128,7 @@ public class CarListFragment extends BaseFragment implements ICarManageView {
                 List<Company> companies = adapter3.getCompanyList();
                 if (companies != null) {
                     curCompId = companies.get(position).getId();
-//                    presenter.loadEscortsByCompanyId(curCompId);
+                    presenter.loadCarByCompanyId(curCompId);
                 }
             }
 
@@ -144,6 +144,9 @@ public class CarListFragment extends BaseFragment implements ICarManageView {
                 presenter.loadCarByCompanyId(curCompId);
             }
         });
+
+        rvCar.setAdapter(listAdapter);
+        rvCar.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     @Override

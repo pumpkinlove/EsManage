@@ -8,7 +8,7 @@
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:padding="@dimen/activity_padding"
-    tools:showIn="@layout/activity_escort_detail">
+    tools:showIn="@layout/activity_car_detail">
 
     <LinearLayout
         android:id="@+id/ll_input_info"
@@ -33,7 +33,7 @@
 
                 <EditText
                     android:id="@+id/et_escort_name"
-                    android:hint="姓名"
+                    android:hint="车牌号"
                     style="@style/style_table_input"
                     android:textSize="22sp"
                     android:layout_width="match_parent"
@@ -94,29 +94,8 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/common_text_height"
                 android:layout_weight="1"
-                android:drawableStart="@mipmap/red_finger"
                 android:drawablePadding="10dp"
-                android:text="指纹一\n（未采集）" />
-
-            <View
-                android:background="@color/gray_light"
-                android:layout_width="1px"
-                android:layout_height="match_parent"/>
-
-            <TextView
-                android:id="@+id/tv_escort_finger1"
-                android:focusable="true"
-                android:clickable="true"
-                android:background="@drawable/white_btn_bg"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:gravity="center"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/common_text_height"
-                android:drawableStart="@mipmap/red_finger"
-                android:layout_weight="1"
-                android:drawablePadding="10dp"
-                android:text="指纹二\n（未采集）" />
+                android:text="RFID" />
 
         </LinearLayout>
 
@@ -157,30 +136,6 @@
             android:layout_width="match_parent"
             android:layout_height="1px"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                style="@style/style_table_text"
-                android:text="身份证号码"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="@dimen/common_text_height" />
-
-            <View
-                android:background="@color/gray_light"
-                android:layout_width="1px"
-                android:layout_height="match_parent"/>
-
-            <EditText
-                android:id="@+id/et_escort_id_card"
-                style="@style/style_table_input"
-                android:layout_width="0dp"
-                android:layout_weight="2.5"
-                android:layout_height="@dimen/common_text_height" />
-
-        </LinearLayout>
 
         <View
             android:background="@color/gray_light"
@@ -190,32 +145,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"/>
-
-        android:background="@color/gray_light"
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                style="@style/style_table_text"
-                android:text="联系方式"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="@dimen/common_text_height" />
-
-            <View
-                android:background="@color/gray_light"
-                android:layout_width="1px"
-                android:layout_height="match_parent"/>
-
-            <EditText
-                android:id="@+id/et_escort_phone"
-                style="@style/style_table_input"
-                android:layout_width="0dp"
-                android:layout_weight="2.5"
-                android:layout_height="@dimen/common_text_height" />
-
-        </LinearLayout>
 
     </LinearLayout>
 

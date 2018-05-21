@@ -140,14 +140,22 @@ public class EscortManagePresenter implements IEscortManagePresenter {
                 .flatMap(new Function<Integer, ObservableSource<ResponseEntity<Escort>>>() {
                     @Override
                     public ObservableSource<ResponseEntity<Escort>> apply(Integer compId) throws Exception {
+                        String sjc;
                         Config config = configModel.loadConfig();
-                        // TODO: 2018/5/20 0020 时间戳哪里来的
-                        return escortModel.downEscortByCompId(compId, "", config);
+                        List<Escort> escorts = escortModel.findLocalEscortsByCompId(compId);
+                        if (escorts == null || escorts.size() == 0) {
+                            sjc = "";
+                        } else {
+                            sjc = escorts.get(0).getOpdate();
+                        }
+                        return escortModel.downEscortByCompId(compId, sjc, config);
                     }
                 })
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<ResponseEntity<Escort>>() {
                     @Override
                     public void accept(ResponseEntity<Escort> resp) throws Exception {
+                        escortListView.hideLoading();
                         if (TextUtils.equals(Constant.SUCCESS, resp.getCode())) {
                             escortListView.showEscortList(resp.getListData());
                         } else if (TextUtils.equals(Constant.FAILURE, resp.getCode())) {
@@ -159,6 +167,7 @@ public class EscortManagePresenter implements IEscortManagePresenter {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
+                        escortListView.hideLoading();
                         escortListView.alert("加载押运员列表失败！\r\n" + throwable.getMessage());
                     }
                 });

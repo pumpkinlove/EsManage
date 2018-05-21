@@ -146,9 +146,11 @@ public class CarManagePresenter implements ICarManagePresenter {
                         return carModel.downCarByCompId(compId,config);
                     }
                 })
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<ResponseEntity<Car>>() {
                     @Override
                     public void accept(ResponseEntity<Car> resp) throws Exception {
+                        carManageView.hideLoading();
                         if (TextUtils.equals(Constant.SUCCESS, resp.getCode())) {
                             carManageView.showCartList(resp.getListData());
                         } else if (TextUtils.equals(Constant.FAILURE, resp.getCode())) {
@@ -160,6 +162,7 @@ public class CarManagePresenter implements ICarManagePresenter {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
+                        carManageView.hideLoading();
                         carManageView.alert("加载押运员列表失败！\r\n" + throwable.getMessage());
                     }
                 });

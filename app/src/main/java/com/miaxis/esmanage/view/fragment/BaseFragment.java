@@ -51,7 +51,7 @@ public abstract class BaseFragment extends RxFragment implements IBaseView {
 
     @Override
     public void alert(String message) {
-        MaterialDialog dialog = new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
+        MaterialDialog dialog = new MaterialDialog.Builder(Objects.requireNonNull(getActivity()))
                 .content(message)
                 .build();
         dialog.show();

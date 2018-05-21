@@ -96,4 +96,9 @@
         <item name="android:layout_height">@dimen/common_button_height</item>
     </style>
 
+    <style name="popwin_anim_style">
+        <item name="android:windowEnterAnimation">@anim/ppwindow_show_anim</item>
+        <item name="android:windowExitAnimation">@anim/ppwindow_hide_anim</item>
+    </style>
+
 </resources>
