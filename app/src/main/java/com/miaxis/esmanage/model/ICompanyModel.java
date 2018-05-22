@@ -12,6 +12,7 @@ public interface ICompanyModel extends IBaseModel {
 
     List<Company> findAllLocalComps();
     List<Company> findLocalCompsByParentCode(String parentCode);
+    Company findCompById(int compId);
 
     Observable<ResponseEntity> verifyCompany(Config config);
 

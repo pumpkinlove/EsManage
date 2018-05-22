@@ -1,6 +1,5 @@
 package com.miaxis.esmanage.view.activity;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
@@ -12,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.miaxis.esmanage.MainActivity;
 import com.miaxis.esmanage.R;
 import com.miaxis.esmanage.presenter.ILoginPresenter;
@@ -117,10 +115,10 @@ public class LoginActivity extends BaseActivity implements ILoginView, ConfigFra
 
     @OnClick(R.id.btn_login)
     void onLoginClick() {
-        onLoginSuccess();
+//        onLoginSuccess();
         String account = etUsername.getText().toString().trim();
         String pwd = etPassword.getText().toString().trim();
-//        loginPresenter.doLogin(account, pwd);
+        loginPresenter.doLogin(account, pwd);
     }
 
     @Override

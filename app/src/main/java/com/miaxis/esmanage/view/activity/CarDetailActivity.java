@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.miaxis.esmanage.presenter.ICarDetailPresenter;
 import com.miaxis.esmanage.presenter.impl.CarDetailPresenter;
 import com.miaxis.esmanage.util.CommonUtil;
 import com.miaxis.esmanage.util.Constant;
+import com.miaxis.esmanage.util.DateUtil;
 import com.miaxis.esmanage.view.ICarDetailView;
 import com.miaxis.esmanage.view.custom.BottomMenu;
 
@@ -34,6 +36,7 @@ import butterknife.OnClick;
 
 import static com.miaxis.esmanage.util.Constant.INTENT_ESCORT_DETAIL_CAR;
 import static com.miaxis.esmanage.util.Constant.INTENT_DETAIL_OP;
+import static com.miaxis.esmanage.util.Constant.INTENT_EXTRA_COM_ID;
 
 public class CarDetailActivity extends BaseActivity implements ICarDetailView {
 
@@ -51,8 +54,8 @@ public class CarDetailActivity extends BaseActivity implements ICarDetailView {
     TextView tvCarComp;
     @BindView(R.id.tv_car_operator)
     TextView tvCarOperator;
-    @BindView(R.id.tv_car_remark)
-    TextView tvCarRemark;
+    @BindView(R.id.et_car_remark)
+    EditText etCarRemark;
     @BindView(R.id.ll_input_info)
     LinearLayout llInputInfo;
 
@@ -66,6 +69,7 @@ public class CarDetailActivity extends BaseActivity implements ICarDetailView {
     private Car mCar;
     private ICarDetailPresenter presenter;
     private ProgressDialog pdCar;
+    private int compId;
 
     @Override
     protected int setContentView() {
@@ -76,9 +80,11 @@ public class CarDetailActivity extends BaseActivity implements ICarDetailView {
     protected void initData() {
         presenter = new CarDetailPresenter(this);
         mode = getIntent().getIntExtra(INTENT_DETAIL_OP, -1);
+        compId = getIntent().getIntExtra(INTENT_EXTRA_COM_ID, -1);
         switch (mode) {
             case Constant.MODE_ADD:
                 mCar = new Car();
+                mCar.setCompid(compId);
                 break;
             case Constant.MODE_VIEW:
                 mCar = (Car) getIntent().getSerializableExtra(INTENT_ESCORT_DETAIL_CAR);
@@ -141,12 +147,15 @@ public class CarDetailActivity extends BaseActivity implements ICarDetailView {
             case Constant.MODE_VIEW:
                 toolbar.setTitle(mCar.getPlateno());
                 setEditable(false);
+                showCarInfo(mCar);
+                presenter.findCarComp(mCar);
                 break;
         }
+
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         bottomMenu = new BottomMenu(this, menuListener);
-        showCarInfo(mCar);
+
     }
 
     @Override
@@ -241,11 +250,17 @@ public class CarDetailActivity extends BaseActivity implements ICarDetailView {
     @Override
     public void showCarInfo(Car car) {
         etCarPlateNo.setText(car.getPlateno());
-        etCarCode.setText(car.getCarcode());
+        if (!TextUtils.isEmpty(car.getCarcode())) {
+            etCarCode.setText(car.getCarcode().split("-")[1]);
+        }
         tvCarRfid.setText(car.getRfid());
         tvCarComp.setText(car.getCompname());
         tvCarOperator.setText(car.getOpusername());
-        tvCarRemark.setText(car.getRemark());
+        etCarRemark.setText(car.getRemark());
+        if (TextUtils.isEmpty(car.getCarphoto())) {
+            Uri uri = Uri.parse(car.getCarphoto());
+            sdvCar.setImageURI(uri);
+        }
     }
 
     @Override
@@ -282,7 +297,7 @@ public class CarDetailActivity extends BaseActivity implements ICarDetailView {
         etCarCode.setEnabled(editable);
         tvCarRfid.setEnabled(editable);
         tvCarComp.setEnabled(editable);
-        tvCarRemark.setEnabled(editable);
+        etCarRemark.setEnabled(editable);
         if (editable) {
             etCarPlateNo.requestFocus();
         }
@@ -294,10 +309,20 @@ public class CarDetailActivity extends BaseActivity implements ICarDetailView {
     }
 
     private void addCar() {
+        mCar.setPlateno(etCarPlateNo.getText().toString().trim());
+        mCar.setCarcode("abc-" + etCarCode.getText().toString().trim());
+        mCar.setRfid(tvCarRfid.getText().toString().trim());
+        mCar.setOpdate(DateUtil.toAll(new Date()));
+        mCar.setRemark(etCarRemark.getText().toString().trim());
         presenter.addCar(mCar);
     }
 
     private void modCar() {
+        mCar.setPlateno(etCarPlateNo.getText().toString().trim());
+        mCar.setCarcode("abc-" + etCarCode.getText().toString().trim());
+        mCar.setRfid(tvCarRfid.getText().toString().trim());
+        mCar.setOpdate(DateUtil.toAll(new Date()));
+        mCar.setRemark(etCarRemark.getText().toString().trim());
         presenter.modCar(mCar);
     }
 

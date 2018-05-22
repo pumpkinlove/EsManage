@@ -152,9 +152,10 @@ public class CarListFragment extends BaseFragment implements ICarManageView {
         listAdapter.setItemListener(new CarListAdapter.onRecyclerItemClickerListener() {
             @Override
             public void onRecyclerItemClick(View view, Object data, int position) {
-                Intent i = new Intent(getContext(), EscortDetailActivity.class);
+                Intent i = new Intent(getContext(), CarDetailActivity.class);
                 i.putExtra(Constant.INTENT_ESCORT_DETAIL_CAR, (Car)data);
                 i.putExtra(Constant.INTENT_DETAIL_OP, Constant.MODE_VIEW);
+                i.putExtra(Constant.INTENT_EXTRA_COM_ID, curCompId);
                 startActivity(i);
             }
         });
@@ -217,7 +218,16 @@ public class CarListFragment extends BaseFragment implements ICarManageView {
     void onAddCar() {
         Intent i = new Intent(getContext(), CarDetailActivity.class);
         i.putExtra(Constant.INTENT_DETAIL_OP, Constant.MODE_ADD);
+        i.putExtra(Constant.INTENT_EXTRA_COM_ID, curCompId);
         startActivity(i);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (curCompId > 0) {
+            presenter.loadCarByCompanyId(curCompId);
+        }
+
+    }
 }

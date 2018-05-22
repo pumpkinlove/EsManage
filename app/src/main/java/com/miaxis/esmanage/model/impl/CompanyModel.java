@@ -44,6 +44,11 @@ public class CompanyModel implements ICompanyModel {
     }
 
     @Override
+    public Company findCompById(int compId) {
+        return companyDao.queryBuilder().where(CompanyDao.Properties.Id.eq(compId)).unique();
+    }
+
+    @Override
     public void saveCompany(List<Company> companyList) {
         companyDao.insertOrReplaceInTx(companyList);
     }

@@ -16,5 +16,5 @@ public class Constant {
     public static final int REQUEST_CODE_GET_FINGER = 1992;
     public static final String INTENT_EXTRA_FINGER_DATA = "INTENT_EXTRA_FINGER_DATA";
     public static final String INTENT_EXTRA_FINGER_POSITION = "INTENT_EXTRA_FINGER_POSITION";
-
+    public static final String INTENT_EXTRA_COM_ID = "INTENT_EXTRA_COM_ID";
 }

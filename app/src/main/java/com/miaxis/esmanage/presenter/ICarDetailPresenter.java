@@ -12,4 +12,6 @@ public interface ICarDetailPresenter extends IBasePresenter {
 
     void getRfid();
 
+    void findCarComp(Car car);
+
 }

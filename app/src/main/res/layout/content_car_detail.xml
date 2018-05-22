@@ -48,6 +48,9 @@
                 <EditText
                     android:id="@+id/et_car_code"
                     android:hint="编号"
+                    android:maxLength="6"
+                    android:digits="0123456789"
+                    android:inputType="number"
                     style="@style/style_table_input"
                     android:layout_width="match_parent"
                     android:layout_weight="2"
@@ -154,6 +157,7 @@
                 android:layout_height="match_parent"/>
 
             <TextView
+                style="@style/style_table_text"
                 android:id="@+id/tv_car_operator"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/common_text_height"
@@ -182,8 +186,8 @@
                 android:layout_width="1px"
                 android:layout_height="match_parent"/>
 
-            <TextView
-                android:id="@+id/tv_car_remark"
+            <EditText
+                android:id="@+id/et_car_remark"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/common_text_height"
                 android:layout_weight="2.5" />

@@ -10,4 +10,6 @@ public interface IEscortDetailPresenter extends IBasePresenter {
 
     void modEscort(Escort escort);
 
+    void findEscortComp(Escort escort);
+
 }

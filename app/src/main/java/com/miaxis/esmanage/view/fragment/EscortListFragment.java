@@ -54,7 +54,7 @@ public class EscortListFragment extends BaseFragment implements IEscortListView 
 
     private IEscortManagePresenter presenter;
 
-    private int curCompId;
+    private int curCompId = -1;
 
     public EscortListFragment() {
         // Required empty public constructor
@@ -153,6 +153,7 @@ public class EscortListFragment extends BaseFragment implements IEscortListView 
                 Intent i = new Intent(getContext(), EscortDetailActivity.class);
                 i.putExtra(Constant.INTENT_ESCORT_DETAIL_ESCORT, (Escort)data);
                 i.putExtra(Constant.INTENT_DETAIL_OP, Constant.MODE_VIEW);
+                i.putExtra(Constant.INTENT_EXTRA_COM_ID, curCompId);
                 startActivity(i);
             }
         });
@@ -215,8 +216,15 @@ public class EscortListFragment extends BaseFragment implements IEscortListView 
     void onAddEscort() {
         Intent i = new Intent(getContext(), EscortDetailActivity.class);
         i.putExtra(Constant.INTENT_DETAIL_OP, Constant.MODE_ADD);
+        i.putExtra(Constant.INTENT_EXTRA_COM_ID, curCompId);
         startActivity(i);
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (curCompId > 0) {
+            presenter.loadEscortsByCompanyId(curCompId);
+        }
+    }
 }

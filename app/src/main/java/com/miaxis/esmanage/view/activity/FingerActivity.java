@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -76,12 +77,13 @@ public class FingerActivity extends BaseActivity implements IFingerView {
 
     @Override
     public void showLoading(String message) {
+        tvMessage.setVisibility(View.VISIBLE);
         tvMessage.setText(message);
     }
 
     @Override
     public void hideLoading() {
-
+        tvMessage.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -102,6 +104,7 @@ public class FingerActivity extends BaseActivity implements IFingerView {
     @OnClick(R.id.btn_cancel)
     void onCancel() {
         Device.cancel();
+        finish();
     }
 
 }

@@ -16,6 +16,7 @@ public interface IEscortModel extends IBaseModel {
 
     Observable<ResponseEntity<Escort>> downEscortByCompId(Integer compId, String sjc, Config config);
     Observable<ResponseEntity> delEscort(Escort escort, Config config);
+    Observable<ResponseEntity> modEscort(Escort escort, Config config) throws UnsupportedEncodingException;
     Observable<ResponseEntity> addEscort(Escort escort, Config config) throws UnsupportedEncodingException;
 
     void saveEscortListLocal(List<Escort> escortList);

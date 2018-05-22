@@ -132,7 +132,7 @@ public class EscortManagePresenter implements IEscortManagePresenter {
     }
 
     @Override
-    public void loadEscortsByCompanyId(int compId) {
+    public void loadEscortsByCompanyId(final int compId) {
         // TODO: 2018/5/20 0020 若网络加载失败，加载本地数据库数据
         Observable
                 .just(compId)
@@ -151,18 +151,28 @@ public class EscortManagePresenter implements IEscortManagePresenter {
                         return escortModel.downEscortByCompId(compId, sjc, config);
                     }
                 })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<ResponseEntity<Escort>>() {
+                .map(new Function<ResponseEntity<Escort>, List<Escort>>() {
                     @Override
-                    public void accept(ResponseEntity<Escort> resp) throws Exception {
-                        escortListView.hideLoading();
+                    public List<Escort> apply(ResponseEntity<Escort> resp) throws Exception {
                         if (TextUtils.equals(Constant.SUCCESS, resp.getCode())) {
-                            escortListView.showEscortList(resp.getListData());
+                            List<Escort> downEscorts = resp.getListData();
+                            if (downEscorts != null && downEscorts.size() > 0) {
+                                escortModel.saveEscortListLocal(resp.getListData());
+                            }
+                            return escortModel.findLocalEscortsByCompId(compId);
                         } else if (TextUtils.equals(Constant.FAILURE, resp.getCode())) {
-                            escortListView.alert("加载押运员列表失败！\r\n" + resp.getMessage());
+                            throw new Exception(resp.getMessage());
                         } else {
-                            escortListView.alert("加载押运员列表失败！\r\n");
+                            throw new Exception("");
                         }
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<Escort>>() {
+                    @Override
+                    public void accept(List<Escort> escortList) throws Exception {
+                        escortListView.hideLoading();
+                        escortListView.showEscortList(escortList);
                     }
                 }, new Consumer<Throwable>() {
                     @Override

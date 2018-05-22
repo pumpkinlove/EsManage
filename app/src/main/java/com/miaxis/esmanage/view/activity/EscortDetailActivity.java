@@ -1,10 +1,12 @@
 package com.miaxis.esmanage.view.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +21,7 @@ import com.miaxis.esmanage.presenter.IEscortDetailPresenter;
 import com.miaxis.esmanage.presenter.impl.EscortDetailPresenter;
 import com.miaxis.esmanage.util.CommonUtil;
 import com.miaxis.esmanage.util.Constant;
+import com.miaxis.esmanage.util.DateUtil;
 import com.miaxis.esmanage.view.IEscortDetailView;
 import com.miaxis.esmanage.view.custom.BottomMenu;
 
@@ -31,6 +34,7 @@ import butterknife.OnClick;
 
 import static com.miaxis.esmanage.util.Constant.INTENT_ESCORT_DETAIL_ESCORT;
 import static com.miaxis.esmanage.util.Constant.INTENT_DETAIL_OP;
+import static com.miaxis.esmanage.util.Constant.INTENT_EXTRA_COM_ID;
 import static com.miaxis.esmanage.util.Constant.REQUEST_CODE_GET_FINGER;
 
 public class EscortDetailActivity extends BaseActivity implements IEscortDetailView {
@@ -58,8 +62,6 @@ public class EscortDetailActivity extends BaseActivity implements IEscortDetailV
     LinearLayout llInputInfo;
     @BindView(R.id.tv_escort_operator)
     TextView tvEscortOperator;
-    @BindView(R.id.ll_other_info)
-    LinearLayout llOtherInfo;
 
     private int mode;           // 1001 mod or  1002 add
     private BottomMenu bottomMenu;
@@ -69,6 +71,8 @@ public class EscortDetailActivity extends BaseActivity implements IEscortDetailV
     private Escort escort;
 
     private IEscortDetailPresenter presenter;
+    private int compId;
+    private ProgressDialog pdEscort;
 
     @Override
     protected int setContentView() {
@@ -79,9 +83,11 @@ public class EscortDetailActivity extends BaseActivity implements IEscortDetailV
     protected void initData() {
         presenter = new EscortDetailPresenter(this);
         mode = getIntent().getIntExtra(INTENT_DETAIL_OP, -1);
+        compId = getIntent().getIntExtra(INTENT_EXTRA_COM_ID, -1);
         switch (mode) {
             case Constant.MODE_ADD:
                 escort = new Escort();
+                escort.setComid(compId + "");
                 break;
             case Constant.MODE_VIEW:
                 escort = (Escort) getIntent().getSerializableExtra(INTENT_ESCORT_DETAIL_ESCORT);
@@ -128,16 +134,19 @@ public class EscortDetailActivity extends BaseActivity implements IEscortDetailV
                 break;
             case Constant.MODE_ADD:
                 toolbar.setTitle("新增押运员");
+                presenter.findEscortComp(escort);
                 break;
             case Constant.MODE_VIEW:
                 toolbar.setTitle(escort.getEsname());
+                presenter.findEscortComp(escort);
                 setEditable(false);
                 break;
         }
+        pdEscort = new ProgressDialog(this);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         bottomMenu = new BottomMenu(this, menuListener);
-        updateEscortInfo(escort);
+
     }
 
     @Override
@@ -194,12 +203,17 @@ public class EscortDetailActivity extends BaseActivity implements IEscortDetailV
 
     @Override
     public void showLoading(String message) {
-
+        pdEscort.setMessage(message);
+        if (!pdEscort.isShowing()) {
+            pdEscort.show();
+        }
     }
 
     @Override
     public void hideLoading() {
-
+        if (pdEscort.isShowing()) {
+            pdEscort.dismiss();
+        }
     }
 
     @Override
@@ -242,10 +256,32 @@ public class EscortDetailActivity extends BaseActivity implements IEscortDetailV
     @Override
     public void updateEscortInfo(Escort escort) {
         etEscortName.setText(escort.getEsname());
-        etEscortCode.setText(escort.getEscode());
+        String esCode = escort.getEscode();
+        if (!TextUtils.isEmpty(esCode)) {
+            etEscortCode.setText(esCode.split("-")[1]);
+        }
         tvEscortComp.setText(escort.getCompname());
         etEscortIdCard.setText(escort.getIdcard());
         etEscortPhone.setText(escort.getPhoneno());
+        if (TextUtils.isEmpty(escort.getFinger0())) {
+            tvEscortFinger0.setText("指纹一\r\n（未采集）");
+            tvEscortFinger0.setTextColor(getResources().getColor(R.color.dark));
+        } else {
+            tvEscortFinger0.setText("指纹一\r\n（已采集）");
+            tvEscortFinger0.setTextColor(getResources().getColor(R.color.darkgreen));
+        }
+        if (TextUtils.isEmpty(escort.getFinger1())) {
+            tvEscortFinger1.setText("指纹二\r\n（未采集）");
+            tvEscortFinger1.setTextColor(getResources().getColor(R.color.dark));
+        } else {
+            tvEscortFinger1.setText("指纹二\r\n（已采集）");
+            tvEscortFinger1.setTextColor(getResources().getColor(R.color.darkgreen));
+        }
+        if (!TextUtils.isEmpty(escort.getPhotoUrl())) {
+            Uri uri = Uri.parse(escort.getPhotoUrl());
+            sdvEscort.setImageURI(uri);
+        }
+
     }
 
     @Override
@@ -291,6 +327,11 @@ public class EscortDetailActivity extends BaseActivity implements IEscortDetailV
         }
     }
 
+    @Override
+    public void onDelSuccess() {
+        finish();
+    }
+
     @OnClick(R.id.sdv_escort)
     void onPhotoClick() {
         bottomMenu.show();
@@ -312,22 +353,24 @@ public class EscortDetailActivity extends BaseActivity implements IEscortDetailV
 
     private void addEscort() {
         escort.setEsname(etEscortName.getText().toString().trim());
-        escort.setEscode(etEscortCode.getText().toString().trim());
+        escort.setEscode("abc-" + etEscortCode.getText().toString().trim());
         escort.setCompname(tvEscortComp.getText().toString().trim());
         escort.setIdcard(etEscortIdCard.getText().toString().trim());
         escort.setPhoneno(etEscortPhone.getText().toString().trim());
+        escort.setOpdate(DateUtil.toAll(new Date()));
         escort.setOpusername(tvEscortOperator.getText().toString().trim());
         presenter.addEscort(escort);
     }
 
     private void modEscort() {
         escort.setEsname(etEscortName.getText().toString().trim());
-        escort.setEscode(etEscortCode.getText().toString().trim());
+        escort.setEscode("abc-" + etEscortCode.getText().toString().trim());
         escort.setCompname(tvEscortComp.getText().toString().trim());
         escort.setIdcard(etEscortIdCard.getText().toString().trim());
         escort.setPhoneno(etEscortPhone.getText().toString().trim());
         escort.setOpusername(tvEscortOperator.getText().toString().trim());
-        presenter.addEscort(escort);
+        escort.setOpdate(DateUtil.toAll(new Date()));
+        presenter.modEscort(escort);
     }
 
     private void delEscort() {

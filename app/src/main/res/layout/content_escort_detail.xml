@@ -49,6 +49,9 @@
                     android:id="@+id/et_escort_code"
                     android:hint="编号"
                     style="@style/style_table_input"
+                    android:maxLength="4"
+                    android:digits="0123456789"
+                    android:inputType="number"
                     android:layout_width="match_parent"
                     android:layout_weight="2"
                     android:layout_height="0dp" />
@@ -191,7 +194,6 @@
             android:layout_width="match_parent"
             android:layout_height="1px"/>
 
-        android:background="@color/gray_light"
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -217,17 +219,8 @@
 
         </LinearLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:background="@drawable/table_stroke_bg"
-        android:id="@+id/ll_other_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/ll_input_info">
-
         <LinearLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -252,8 +245,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
-
-
 
 </android.support.constraint.ConstraintLayout>

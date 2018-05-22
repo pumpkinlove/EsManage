@@ -1,5 +1,7 @@
 package com.miaxis.esmanage.model.impl;
 
+import android.text.TextUtils;
+
 import com.google.gson.Gson;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.miaxis.esmanage.app.EsManageApp;
@@ -14,6 +16,7 @@ import com.miaxis.esmanage.util.CommonUtil;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -60,6 +63,29 @@ public class EscortModel implements IEscortModel {
     }
 
     @Override
+    public Observable<ResponseEntity> modEscort(Escort escort, Config config) throws UnsupportedEncodingException {
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())//请求的结果转为实体类
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())  //适配RxJava2.0, RxJava1.x则为RxJavaCallAdapterFactory.create()
+                .baseUrl("http://" + config.getIp() + ":" + config.getPort())
+                .build();
+        EscortNet escortNet = retrofit.create(EscortNet.class);
+        encodeEscort(escort);
+        String jsonEscort = new Gson().toJson(escort);
+        decodeEscort(escort);
+        File file = new File(escort.getPhotoUrl());
+        if (file.exists()) {
+            RequestBody requestBody = RequestBody.create(MediaType.parse(CommonUtil.getMimeType(escort.getPhotoUrl())), file);
+            MultipartBody.Part part = MultipartBody.Part.createFormData("image", file.getName(), requestBody);
+            return escortNet.modEscort(new Gson().toJson(escort), part);
+        } else {
+            MultipartBody.Builder builder = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM);//表单类型
+            return escortNet.modEscort(jsonEscort, builder.addFormDataPart("t", "").build().part(0));
+        }
+    }
+
+    @Override
     public Observable<ResponseEntity> addEscort(Escort escort, Config config) throws UnsupportedEncodingException {
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())//请求的结果转为实体类
@@ -70,7 +96,10 @@ public class EscortModel implements IEscortModel {
         File file = new File(escort.getPhotoUrl());
         RequestBody requestBody = RequestBody.create(MediaType.parse(CommonUtil.getMimeType(escort.getPhotoUrl())), file);
         MultipartBody.Part part = MultipartBody.Part.createFormData("image", file.getName(), requestBody);
-        return escortNet.addEscort(new Gson().toJson(escort), part);
+        encodeEscort(escort);
+        String jsonEscort = new Gson().toJson(escort);
+        decodeEscort(escort);
+        return escortNet.addEscort(jsonEscort, part);
     }
 
     @Override
@@ -86,5 +115,35 @@ public class EscortModel implements IEscortModel {
     @Override
     public void delEscortLocal(Escort escort) {
         escortDao.delete(escort);
+    }
+
+    private void encodeEscort(Escort escort) throws UnsupportedEncodingException {
+        if (!TextUtils.isEmpty(escort.getEsname())) {
+            escort.setEsname(URLEncoder.encode(escort.getEsname(), "utf-8"));
+        }
+        if (!TextUtils.isEmpty(escort.getCompname())) {
+            escort.setCompname(URLEncoder.encode(escort.getCompname(), "utf-8"));
+        }
+        if (!TextUtils.isEmpty(escort.getOpusername())) {
+            escort.setOpusername(URLEncoder.encode(escort.getOpusername(), "utf-8"));
+        }
+        if (!TextUtils.isEmpty(escort.getRemark())) {
+            escort.setRemark(URLEncoder.encode(escort.getRemark(), "utf-8"));
+        }
+    }
+
+    private void decodeEscort(Escort escort) throws UnsupportedEncodingException {
+        if (!TextUtils.isEmpty(escort.getEsname())) {
+            escort.setEsname(URLDecoder.decode(escort.getEsname(), "utf-8"));
+        }
+        if (!TextUtils.isEmpty(escort.getCompname())) {
+            escort.setCompname(URLDecoder.decode(escort.getCompname(), "utf-8"));
+        }
+        if (!TextUtils.isEmpty(escort.getOpusername())) {
+            escort.setOpusername(URLDecoder.decode(escort.getOpusername(), "utf-8"));
+        }
+        if (!TextUtils.isEmpty(escort.getRemark())) {
+            escort.setRemark(URLDecoder.decode(escort.getRemark(), "utf-8"));
+        }
     }
 }

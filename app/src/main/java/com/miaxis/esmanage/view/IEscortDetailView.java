@@ -14,4 +14,6 @@ public interface IEscortDetailView extends IBaseView {
 
     void onSaveSuccess();
 
+    void onDelSuccess();
+
 }

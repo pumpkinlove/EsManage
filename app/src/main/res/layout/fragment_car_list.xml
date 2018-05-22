@@ -75,7 +75,6 @@
         app:borderWidth="0dp"
         app:elevation="@dimen/common_elevation"
         app:fabSize="auto"
-        app:pressedTranslationZ="@dimen/activity_padding"
         app:rippleColor="@color/white"
         app:useCompatPadding="true" />
 

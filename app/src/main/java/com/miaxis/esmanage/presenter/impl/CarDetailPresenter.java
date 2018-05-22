@@ -5,10 +5,14 @@ import android.text.TextUtils;
 
 import com.device.Device;
 import com.miaxis.esmanage.entity.Car;
+import com.miaxis.esmanage.entity.Company;
 import com.miaxis.esmanage.entity.Config;
+import com.miaxis.esmanage.entity.Escort;
 import com.miaxis.esmanage.model.ICarModel;
+import com.miaxis.esmanage.model.ICompanyModel;
 import com.miaxis.esmanage.model.IConfigModel;
 import com.miaxis.esmanage.model.impl.CarModel;
+import com.miaxis.esmanage.model.impl.CompanyModel;
 import com.miaxis.esmanage.model.impl.ConfigModel;
 import com.miaxis.esmanage.model.retrofit.ResponseEntity;
 import com.miaxis.esmanage.presenter.ICarDetailPresenter;
@@ -29,11 +33,13 @@ public class CarDetailPresenter implements ICarDetailPresenter {
     private ICarDetailView detailView;
     private ICarModel carModel;
     private IConfigModel configModel;
+    private ICompanyModel companyModel;
 
     public CarDetailPresenter(ICarDetailView detailView) {
         this.detailView = detailView;
         carModel = new CarModel();
         configModel = new ConfigModel();
+        companyModel = new CompanyModel();
 
     }
 
@@ -134,7 +140,7 @@ public class CarDetailPresenter implements ICarDetailPresenter {
                 .doOnNext(new Consumer<Car>() {
                     @Override
                     public void accept(Car car) throws Exception {
-                        detailView.showLoading("正在删除车辆信息...");
+                        detailView.showLoading("正在保存车辆信息...");
                     }
                 })
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -162,16 +168,16 @@ public class CarDetailPresenter implements ICarDetailPresenter {
                         if (TextUtils.equals(Constant.SUCCESS, resp.getCode())) {
                             detailView.onSaveSuccess();
                         } else if (TextUtils.equals(Constant.FAILURE, resp.getCode())) {
-                            detailView.alert("删除失败！\r\n" + resp.getMessage());
+                            detailView.alert("保存失败！\r\n" + resp.getMessage());
                         } else {
-                            detailView.alert("删除失败！");
+                            detailView.alert("保存失败！");
                         }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         detailView.hideLoading();
-                        detailView.alert("删除失败！\r\n" + throwable.getMessage());
+                        detailView.alert("保存失败！\r\n" + throwable.getMessage());
                     }
                 });
     }
@@ -233,6 +239,33 @@ public class CarDetailPresenter implements ICarDetailPresenter {
                     public void accept(Throwable throwable) throws Exception {
                         detailView.hideLoading();
                         detailView.alert("扫描RFID失败！\r\n" + throwable.getMessage());
+                    }
+                });
+    }
+
+    @Override
+    public void findCarComp(final Car car) {
+        Observable
+                .just(car)
+                .doOnNext(new Consumer<Car>() {
+                    @Override
+                    public void accept(Car car) throws Exception {
+                        Company company = companyModel.findCompById(Integer.valueOf(car.getCompid()));
+                        car.setCompname(company.getCompname());
+                        car.setCompno(company.getCompno());
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Car>() {
+                    @Override
+                    public void accept(Car car) throws Exception {
+                        detailView.showCarInfo(car);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        detailView.alert("获取公司信息失败！");
                     }
                 });
     }
