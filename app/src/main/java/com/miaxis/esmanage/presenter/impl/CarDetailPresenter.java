@@ -117,7 +117,7 @@ public class CarDetailPresenter implements ICarDetailPresenter {
                     public void accept(ResponseEntity resp) throws Exception {
                         detailView.hideLoading();
                         if (TextUtils.equals(Constant.SUCCESS, resp.getCode())) {
-                            detailView.onSaveSuccess();
+                            detailView.onDelSuccess();
                         } else if (TextUtils.equals(Constant.FAILURE, resp.getCode())) {
                             detailView.alert("删除失败！\r\n" + resp.getMessage());
                         } else {
@@ -150,14 +150,6 @@ public class CarDetailPresenter implements ICarDetailPresenter {
                     public ObservableSource<ResponseEntity> apply(Car car) throws Exception {
                         Config config = configModel.loadConfig();
                         return carModel.modCar(car, config);
-                    }
-                })
-                .doOnNext(new Consumer<ResponseEntity>() {
-                    @Override
-                    public void accept(ResponseEntity resp) throws Exception {
-                        if (TextUtils.equals(Constant.SUCCESS, resp.getCode())) {
-                            carModel.delCarFromLocal(car);
-                        }
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())

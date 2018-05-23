@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.miaxis.esmanage.MainActivity;
 import com.miaxis.esmanage.R;
+import com.miaxis.esmanage.app.EsManageApp;
 import com.miaxis.esmanage.presenter.ILoginPresenter;
 import com.miaxis.esmanage.presenter.impl.LoginPresenter;
 import com.miaxis.esmanage.view.ILoginView;
@@ -79,6 +80,7 @@ public class LoginActivity extends BaseActivity implements ILoginView, ConfigFra
 
     @Override
     public void onLoginSuccess() {
+        EsManageApp.getInstance().setCurUserCode(etUsername.getText().toString().trim());
         Intent iToMain = new Intent(this, MainActivity.class);
         startActivity(iToMain);
     }

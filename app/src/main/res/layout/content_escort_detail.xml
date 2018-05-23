@@ -179,6 +179,7 @@
             <EditText
                 android:id="@+id/et_escort_id_card"
                 style="@style/style_table_input"
+                android:maxLength="18"
                 android:layout_width="0dp"
                 android:layout_weight="2.5"
                 android:layout_height="@dimen/common_text_height" />

@@ -108,4 +108,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     public void hideLoading() {
 
     }
+
+    @Override
+    public void onBackPressed() {
+    }
 }

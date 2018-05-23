@@ -1,31 +1,69 @@
 package com.miaxis.esmanage.view.fragment;
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.annotation.NonNull;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.miaxis.esmanage.R;
+import com.miaxis.esmanage.view.ISystemView;
 
-public class SystemFragment extends Fragment {
+import java.util.Objects;
+
+import butterknife.OnClick;
+
+public class SystemFragment extends BaseFragment implements ISystemView {
 
     public SystemFragment() {
         // Required empty public constructor
     }
 
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected int setContentView() {
+        return R.layout.fragment_system;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_system, container, false);
+    protected void initData() {
+
     }
 
+    @Override
+    protected void initView() {
+
+    }
+
+
+    @Override
+    public void showLoading(String message) {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @OnClick(R.id.ll_logout)
+    void onSignOutClick() {
+        final MaterialDialog d = new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
+                .content("您确定要退出吗？")
+                .positiveText("确定")
+                .negativeText("取消")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Objects.requireNonNull(getActivity()).finish();
+                        dialog.dismiss();
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .build();
+        d.show();
+    }
 
 }

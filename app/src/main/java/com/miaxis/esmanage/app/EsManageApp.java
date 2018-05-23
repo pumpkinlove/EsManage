@@ -16,6 +16,7 @@ public class EsManageApp extends Application {
 
     private static EsManageApp app;
     private DaoSession daoSession;
+    private String curUserCode;
 
     @Override
     public void onCreate() {
@@ -41,4 +42,11 @@ public class EsManageApp extends Application {
         return daoSession;
     }
 
+    public String getCurUserCode() {
+        return curUserCode;
+    }
+
+    public void setCurUserCode(String curUserCode) {
+        this.curUserCode = curUserCode;
+    }
 }

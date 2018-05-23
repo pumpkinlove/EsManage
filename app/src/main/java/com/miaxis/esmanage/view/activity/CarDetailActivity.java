@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -15,9 +16,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.device.Device;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.miaxis.esmanage.R;
+import com.miaxis.esmanage.app.EsManageApp;
 import com.miaxis.esmanage.entity.Car;
 import com.miaxis.esmanage.presenter.ICarDetailPresenter;
 import com.miaxis.esmanage.presenter.impl.CarDetailPresenter;
@@ -143,6 +147,8 @@ public class CarDetailActivity extends BaseActivity implements ICarDetailView {
                 break;
             case Constant.MODE_ADD:
                 toolbar.setTitle("新增车辆");
+                showCarInfo(mCar);
+                presenter.findCarComp(mCar);
                 break;
             case Constant.MODE_VIEW:
                 toolbar.setTitle(mCar.getPlateno());
@@ -257,7 +263,7 @@ public class CarDetailActivity extends BaseActivity implements ICarDetailView {
         tvCarComp.setText(car.getCompname());
         tvCarOperator.setText(car.getOpusername());
         etCarRemark.setText(car.getRemark());
-        if (TextUtils.isEmpty(car.getCarphoto())) {
+        if (!TextUtils.isEmpty(car.getCarphoto())) {
             Uri uri = Uri.parse(car.getCarphoto());
             sdvCar.setImageURI(uri);
         }
@@ -298,6 +304,7 @@ public class CarDetailActivity extends BaseActivity implements ICarDetailView {
         tvCarRfid.setEnabled(editable);
         tvCarComp.setEnabled(editable);
         etCarRemark.setEnabled(editable);
+        sdvCar.setEnabled(editable);
         if (editable) {
             etCarPlateNo.requestFocus();
         }
@@ -313,6 +320,8 @@ public class CarDetailActivity extends BaseActivity implements ICarDetailView {
         mCar.setCarcode("abc-" + etCarCode.getText().toString().trim());
         mCar.setRfid(tvCarRfid.getText().toString().trim());
         mCar.setOpdate(DateUtil.toAll(new Date()));
+        mCar.setOpuser(EsManageApp.getInstance().getCurUserCode());
+        mCar.setOpusername(EsManageApp.getInstance().getCurUserCode());
         mCar.setRemark(etCarRemark.getText().toString().trim());
         presenter.addCar(mCar);
     }
@@ -323,11 +332,32 @@ public class CarDetailActivity extends BaseActivity implements ICarDetailView {
         mCar.setRfid(tvCarRfid.getText().toString().trim());
         mCar.setOpdate(DateUtil.toAll(new Date()));
         mCar.setRemark(etCarRemark.getText().toString().trim());
+        mCar.setOpuser(EsManageApp.getInstance().getCurUserCode());
+        mCar.setOpusername(EsManageApp.getInstance().getCurUserCode());
         presenter.modCar(mCar);
     }
 
     private void delCar() {
-        presenter.delCar(mCar);
+        final MaterialDialog d = new MaterialDialog.Builder(this)
+                .content("您确定要删除吗？")
+                .positiveText("确定")
+                .negativeText("取消")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        presenter.delCar(mCar);
+                        dialog.dismiss();
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .build();
+        d.show();
+
     }
 
     @OnClick(R.id.sdv_car)

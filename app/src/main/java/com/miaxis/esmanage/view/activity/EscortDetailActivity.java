@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -14,8 +15,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.miaxis.esmanage.R;
+import com.miaxis.esmanage.app.EsManageApp;
 import com.miaxis.esmanage.entity.Escort;
 import com.miaxis.esmanage.presenter.IEscortDetailPresenter;
 import com.miaxis.esmanage.presenter.impl.EscortDetailPresenter;
@@ -358,7 +362,8 @@ public class EscortDetailActivity extends BaseActivity implements IEscortDetailV
         escort.setIdcard(etEscortIdCard.getText().toString().trim());
         escort.setPhoneno(etEscortPhone.getText().toString().trim());
         escort.setOpdate(DateUtil.toAll(new Date()));
-        escort.setOpusername(tvEscortOperator.getText().toString().trim());
+        escort.setOpuser(EsManageApp.getInstance().getCurUserCode());
+        escort.setOpusername(EsManageApp.getInstance().getCurUserCode());
         presenter.addEscort(escort);
     }
 
@@ -368,13 +373,32 @@ public class EscortDetailActivity extends BaseActivity implements IEscortDetailV
         escort.setCompname(tvEscortComp.getText().toString().trim());
         escort.setIdcard(etEscortIdCard.getText().toString().trim());
         escort.setPhoneno(etEscortPhone.getText().toString().trim());
-        escort.setOpusername(tvEscortOperator.getText().toString().trim());
         escort.setOpdate(DateUtil.toAll(new Date()));
+        escort.setOpuser(EsManageApp.getInstance().getCurUserCode());
+        escort.setOpusername(EsManageApp.getInstance().getCurUserCode());
         presenter.modEscort(escort);
     }
 
     private void delEscort() {
-        presenter.delEscort(escort);
+        final MaterialDialog d = new MaterialDialog.Builder(this)
+                .content("您确定要删除吗？")
+                .positiveText("确定")
+                .negativeText("取消")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        presenter.delEscort(escort);
+                        dialog.dismiss();
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .build();
+        d.show();
     }
 
 }

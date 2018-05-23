@@ -63,14 +63,14 @@ public class EscortDetailPresenter implements IEscortDetailPresenter {
                         return escortModel.addEscort(escort, config);
                     }
                 })
-                .doOnNext(new Consumer<ResponseEntity>() {
-                    @Override
-                    public void accept(ResponseEntity resp) throws Exception {
-                        if (TextUtils.equals(Constant.SUCCESS, resp.getCode())) {
-                            escortModel.saveEscortLocal(escort);
-                        }
-                    }
-                })
+//                .doOnNext(new Consumer<ResponseEntity>() {
+//                    @Override
+//                    public void accept(ResponseEntity resp) throws Exception {
+//                        if (TextUtils.equals(Constant.SUCCESS, resp.getCode())) {
+//                            escortModel.saveEscortLocal(escort);
+//                        }
+//                    }
+//                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<ResponseEntity>() {
                     @Override
@@ -161,14 +161,14 @@ public class EscortDetailPresenter implements IEscortDetailPresenter {
                         return escortModel.modEscort(escort, config);
                     }
                 })
-                .doOnNext(new Consumer<ResponseEntity>() {
-                    @Override
-                    public void accept(ResponseEntity resp) throws Exception {
-                        if (TextUtils.equals(Constant.SUCCESS, resp.getCode())) {
-                            escortModel.saveEscortLocal(escort);
-                        }
-                    }
-                })
+//                .doOnNext(new Consumer<ResponseEntity>() {
+//                    @Override
+//                    public void accept(ResponseEntity resp) throws Exception {
+//                        if (TextUtils.equals(Constant.SUCCESS, resp.getCode())) {
+//                            escortModel.saveEscortLocal(escort);
+//                        }
+//                    }
+//                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<ResponseEntity>() {
                     @Override
