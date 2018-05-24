@@ -35,6 +35,7 @@ public class EsManageApp extends Application {
         SQLiteDatabase db = helper.getWritableDatabase();
         DaoMaster daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
+
     }
 
     public DaoSession getDaoSession() {

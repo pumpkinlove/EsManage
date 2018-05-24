@@ -1,6 +1,9 @@
 package com.miaxis.esmanage.presenter.impl;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.text.TextUtils;
 
 import com.miaxis.esmanage.util.Constant;
@@ -98,5 +101,16 @@ public class LoginPresenter implements ILoginPresenter {
                     }
                 });
 
+    }
+
+    @Override
+    public void getVersion(Context context) {
+        PackageManager pm = context.getPackageManager();
+        try {
+            PackageInfo info = pm.getPackageInfo(context.getPackageName(), 0);
+            loginView.showVersion(info.versionName);
+        } catch (Exception ignored) {
+
+        }
     }
 }

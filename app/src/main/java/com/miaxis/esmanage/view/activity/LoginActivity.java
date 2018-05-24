@@ -61,6 +61,7 @@ public class LoginActivity extends BaseActivity implements ILoginView, ConfigFra
     @Override
     protected void initView() {
         pdLogin = new ProgressDialog(this);
+        loginPresenter.getVersion(this);
     }
 
     @Override
@@ -103,6 +104,11 @@ public class LoginActivity extends BaseActivity implements ILoginView, ConfigFra
     @Override
     public void hideLogin() {
         cdLogin.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showVersion(String versionName) {
+        tvVersion.append(versionName);
     }
 
     @OnClick(R.id.iv_config)

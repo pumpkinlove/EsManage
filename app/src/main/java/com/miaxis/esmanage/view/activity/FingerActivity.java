@@ -101,6 +101,12 @@ public class FingerActivity extends BaseActivity implements IFingerView {
         finish();
     }
 
+    @Override
+    public void alert(String message) {
+        super.alert(message);
+        tvMessage.setText(message);
+    }
+
     @OnClick(R.id.btn_cancel)
     void onCancel() {
         Device.cancel();

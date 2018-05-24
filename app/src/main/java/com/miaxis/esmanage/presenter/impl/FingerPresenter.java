@@ -44,7 +44,7 @@ public class FingerPresenter implements IFingerPresenter {
                         } else {
                             throw new Exception(new String(message, "GBK"));
                         }
-                        fingerView.showLoading("请按手指...（第 1 次）");
+                        fingerView.showLoading("请按手指...（第 1 次 / 共 4 次）");
                         e.onNext(1);
                     }
                 })
@@ -61,7 +61,7 @@ public class FingerPresenter implements IFingerPresenter {
                     @Override
                     public void accept(byte[] bytes) throws Exception {
                         fingerView.updateImage(bytes);
-                        fingerView.showLoading("请按手指...（第 2 次）");
+                        fingerView.showLoading("请按手指...（第 2 次 / 共 4 次）");
                     }
                 })
                 .observeOn(Schedulers.io())
@@ -76,7 +76,7 @@ public class FingerPresenter implements IFingerPresenter {
                     @Override
                     public void accept(byte[] image) throws Exception {
                         fingerView.updateImage(image);
-                        fingerView.showLoading("请按手指...（第 3 次）");
+                        fingerView.showLoading("请按手指...（第 3 次 / 共 4 次）");
                     }
                 })
                 .observeOn(Schedulers.io())
@@ -108,7 +108,7 @@ public class FingerPresenter implements IFingerPresenter {
                 .doOnNext(new Consumer<byte[]>() {
                     @Override
                     public void accept(byte[] image) throws Exception {
-                        fingerView.showLoading("请按手指...（第 4 次）");
+                        fingerView.showLoading("请按手指...（第 4 次 / 共 4 次）");
                     }
                 })
                 .observeOn(Schedulers.io())
@@ -151,6 +151,8 @@ public class FingerPresenter implements IFingerPresenter {
                         String errInfo = throwable.getMessage().trim();
                         if (TextUtils.isEmpty(errInfo)) {
                             fingerView.alert("采集指纹失败！");
+                        } else if (TextUtils.equals(errInfo, "操作已取消!")) {
+
                         } else {
                             fingerView.alert(errInfo);
                         }

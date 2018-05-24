@@ -54,6 +54,7 @@ public class EscortListAdapter extends RecyclerView.Adapter<EscortListAdapter.Vi
         if (escort != null) {
             holder.sdvEscort.setImageURI(escort.getPhotoUrl());
             holder.tvEscortName.setText(escort.getEsname());
+            holder.tvEscortCode.setText(escort.getEscode());
             holder.llEscort.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -77,6 +78,8 @@ public class EscortListAdapter extends RecyclerView.Adapter<EscortListAdapter.Vi
         SimpleDraweeView sdvEscort;
         @BindView(R.id.tv_escort_name)
         TextView tvEscortName;
+        @BindView(R.id.tv_escort_code)
+        TextView tvEscortCode;
         @BindView(R.id.ll_escort)
         LinearLayout llEscort;
 

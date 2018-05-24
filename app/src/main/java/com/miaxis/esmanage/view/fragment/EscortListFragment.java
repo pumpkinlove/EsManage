@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
@@ -22,7 +23,9 @@ import com.miaxis.esmanage.presenter.impl.EscortManagePresenter;
 import com.miaxis.esmanage.util.Constant;
 import com.miaxis.esmanage.view.IEscortListView;
 import com.miaxis.esmanage.view.activity.EscortDetailActivity;
+import com.miaxis.esmanage.view.custom.MySpinner;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,13 +43,17 @@ public class EscortListFragment extends BaseFragment implements IEscortListView 
     @BindView(R.id.sp_company_2)
     Spinner spCompany2;
     @BindView(R.id.sp_company_3)
-    Spinner spCompany3;
+    MySpinner spCompany3;
     @BindView(R.id.fab_add_escort)
     FloatingActionButton fabAddEscort;
 
     private CompanySelAdapter adapter1;
     private CompanySelAdapter adapter2;
     private CompanySelAdapter adapter3;
+
+    private boolean sp1IsFirstLoad = true;
+    private boolean sp2IsFirstLoad = true;
+    private boolean sp3IsFirstLoad = true;
 
     private EscortListAdapter listAdapter;
 
@@ -88,6 +95,10 @@ public class EscortListFragment extends BaseFragment implements IEscortListView 
         spCompany1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (sp1IsFirstLoad) {
+                    sp1IsFirstLoad = false;
+                    return;
+                }
                 List<Company> companies = adapter1.getCompanyList();
                 if (companies != null) {
                     curCompId = companies.get(position).getId();
@@ -106,6 +117,10 @@ public class EscortListFragment extends BaseFragment implements IEscortListView 
         spCompany2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (sp2IsFirstLoad) {
+                    sp2IsFirstLoad = false;
+                    return;
+                }
                 List<Company> companies = adapter2.getCompanyList();
                 if (companies != null) {
                     curCompId = companies.get(position).getId();
@@ -124,6 +139,10 @@ public class EscortListFragment extends BaseFragment implements IEscortListView 
         spCompany3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (sp3IsFirstLoad) {
+                    sp3IsFirstLoad = false;
+                    return;
+                }
                 List<Company> companies = adapter3.getCompanyList();
                 if (companies != null) {
                     curCompId = companies.get(position).getId();
@@ -158,16 +177,42 @@ public class EscortListFragment extends BaseFragment implements IEscortListView 
             }
         });
 
+        spCompany1.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                try {
+                    Class<?> clazz = AdapterView.class;
+                    //Field field = clazz.getDeclaredField("mOldSelectedPosition");
+                    //field.setAccessible(true);
+                    //field.setInt(spn,-1);
+                    Field field = clazz.getDeclaredField("mOldSelectedRowId");
+                    field.setAccessible(true);
+                    field.setInt(spCompany1,Integer.MIN_VALUE);
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+                return false;
+            }
+        });
     }
 
     @Override
     public void showCompanySpinner1(List<Company> companyList) {
+        sp1IsFirstLoad = true;
+        sp2IsFirstLoad = true;
+        sp3IsFirstLoad = true;
+        spCompany1.setSelection(0);
+        spCompany2.setSelection(0);
         adapter1.setCompanyList(companyList);
         adapter1.notifyDataSetChanged();
     }
 
     @Override
     public void showCompanySpinner2(List<Company> companyList) {
+        sp2IsFirstLoad = true;
+        sp3IsFirstLoad = true;
+        spCompany2.setSelection(0);
+        spCompany3.setSelection(0);
         spCompany2.setVisibility(View.VISIBLE);
         adapter2.setCompanyList(companyList);
         adapter2.notifyDataSetChanged();
@@ -175,6 +220,8 @@ public class EscortListFragment extends BaseFragment implements IEscortListView 
 
     @Override
     public void showCompanySpinner3(List<Company> companyList) {
+        sp3IsFirstLoad = true;
+        spCompany3.setSelection(0);
         spCompany3.setVisibility(View.VISIBLE);
         adapter3.setCompanyList(companyList);
         adapter3.notifyDataSetChanged();

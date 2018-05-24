@@ -7,5 +7,6 @@ public interface ILoginView extends IBaseView {
     void hideConfig();
     void showLogin();
     void hideLogin();
+    void showVersion(String versionName);
 
 }

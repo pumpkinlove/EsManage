@@ -4,6 +4,7 @@
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="1dp"
     android:background="@drawable/table_stroke_bg"
     android:orientation="horizontal">
 
@@ -12,8 +13,8 @@
         fresco:placeholderImage="@mipmap/default_head"
         android:background="@drawable/table_stroke_bg"
         android:padding="2dp"
-        android:layout_width="60dp"
-        android:layout_height="60dp" />
+        android:layout_width="65dp"
+        android:layout_height="65dp" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -26,13 +27,17 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:gravity="center_vertical"
+            android:paddingStart="@dimen/content_padding"
+            android:paddingEnd="0dp"
             android:id="@+id/tv_escort_name"
+            android:textSize="18sp"
             android:layout_width="match_parent"
-            android:layout_height="35dp" />
+            android:layout_height="40dp" />
 
         <TextView
-            android:gravity="center_vertical"
+            android:paddingStart="@dimen/content_padding"
+            android:paddingEnd="0dp"
+            android:gravity="bottom"
             android:id="@+id/tv_escort_code"
             android:layout_width="match_parent"
             android:layout_height="25dp" />

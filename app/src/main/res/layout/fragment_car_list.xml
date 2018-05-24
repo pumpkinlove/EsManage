@@ -22,16 +22,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <Spinner
+                <com.miaxis.esmanage.view.custom.MySpinner
                     style="@style/style_comp_spinner"
                     android:id="@+id/sp_company_1"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/common_text_height">
 
-                </Spinner>
+                </com.miaxis.esmanage.view.custom.MySpinner>
 
-                <Spinner
+                <com.miaxis.esmanage.view.custom.MySpinner
                     style="@style/style_comp_spinner"
                     android:visibility="invisible"
                     android:id="@+id/sp_company_2"
@@ -39,9 +39,9 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/common_text_height">
 
-                </Spinner>
+                </com.miaxis.esmanage.view.custom.MySpinner>
 
-                <Spinner
+                <com.miaxis.esmanage.view.custom.MySpinner
                     style="@style/style_comp_spinner"
                     android:visibility="invisible"
                     android:id="@+id/sp_company_3"
@@ -49,7 +49,7 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/common_text_height">
 
-                </Spinner>
+                </com.miaxis.esmanage.view.custom.MySpinner>
 
             </LinearLayout>
 

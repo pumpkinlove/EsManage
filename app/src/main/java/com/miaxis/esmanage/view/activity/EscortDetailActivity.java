@@ -67,7 +67,7 @@ public class EscortDetailActivity extends BaseActivity implements IEscortDetailV
     @BindView(R.id.tv_escort_operator)
     TextView tvEscortOperator;
 
-    private int mode;           // 1001 mod or  1002 add
+    private int mode;
     private BottomMenu bottomMenu;
     private View.OnClickListener menuListener;
     private boolean isCameraCapture;
@@ -150,7 +150,6 @@ public class EscortDetailActivity extends BaseActivity implements IEscortDetailV
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         bottomMenu = new BottomMenu(this, menuListener);
-
     }
 
     @Override

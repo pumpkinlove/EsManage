@@ -84,6 +84,9 @@ public class CarManagePresenter implements ICarManagePresenter {
 
     @Override
     public void loadCompany2(String parentCompCode) {
+        if (TextUtils.isEmpty(parentCompCode)) {
+            return;
+        }
         Observable
                 .just(parentCompCode)
                 .map(new Function<String, List<Company>>() {
@@ -97,7 +100,10 @@ public class CarManagePresenter implements ICarManagePresenter {
                 .subscribe(new Consumer<List<Company>>() {
                     @Override
                     public void accept(List<Company> companyList) throws Exception {
-                        carManageView.showCompanySpinner2(companyList);
+                        List<Company> companyList2 = new ArrayList<>();
+                        companyList2.add(new Company());
+                        companyList2.addAll(companyList);
+                        carManageView.showCompanySpinner2(companyList2);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -109,6 +115,9 @@ public class CarManagePresenter implements ICarManagePresenter {
 
     @Override
     public void loadCompany3(String parentCompCode) {
+        if (TextUtils.isEmpty(parentCompCode)) {
+            return;
+        }
         Observable
                 .just(parentCompCode)
                 .map(new Function<String, List<Company>>() {
@@ -122,7 +131,10 @@ public class CarManagePresenter implements ICarManagePresenter {
                 .subscribe(new Consumer<List<Company>>() {
                     @Override
                     public void accept(List<Company> companyList) throws Exception {
-                        carManageView.showCompanySpinner3(companyList);
+                        List<Company> companyList3 = new ArrayList<>();
+                        companyList3.add(new Company());
+                        companyList3.addAll(companyList);
+                        carManageView.showCompanySpinner3(companyList3);
                     }
                 }, new Consumer<Throwable>() {
                     @Override

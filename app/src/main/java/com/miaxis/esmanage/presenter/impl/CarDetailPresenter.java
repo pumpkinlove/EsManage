@@ -58,6 +58,9 @@ public class CarDetailPresenter implements ICarDetailPresenter {
                 .flatMap(new Function<Car, ObservableSource<ResponseEntity>>() {
                     @Override
                     public ObservableSource<ResponseEntity> apply(Car car) throws Exception {
+                        if (TextUtils.isEmpty(car.getCarphoto())) {
+                            throw new Exception("车辆照片不能为空！");
+                        }
                         Config config = configModel.loadConfig();
                         return carModel.addCar(car, config);
                     }
@@ -148,6 +151,9 @@ public class CarDetailPresenter implements ICarDetailPresenter {
                 .flatMap(new Function<Car, ObservableSource<ResponseEntity>>() {
                     @Override
                     public ObservableSource<ResponseEntity> apply(Car car) throws Exception {
+                        if (TextUtils.isEmpty(car.getCarphoto())) {
+                            throw new Exception("车辆照片不能为空！");
+                        }
                         Config config = configModel.loadConfig();
                         return carModel.modCar(car, config);
                     }
@@ -183,7 +189,6 @@ public class CarDetailPresenter implements ICarDetailPresenter {
                         byte[] message = new byte[200];
                         Device.openFinger(message);
                         Device.openRfid(message);
-                        Thread.sleep(1000);
                         detailView.showLoading("正在扫描RFID...");
                         e.onNext("");
                     }
@@ -193,6 +198,7 @@ public class CarDetailPresenter implements ICarDetailPresenter {
                 .map(new Function<String, String>() {
                     @Override
                     public String apply(String s) throws Exception {
+                        Thread.sleep(1000);
                         while (true) {
                             try {
                                 Thread.sleep(100);
@@ -225,12 +231,21 @@ public class CarDetailPresenter implements ICarDetailPresenter {
                     public void accept(String s) throws Exception {
                         detailView.hideLoading();
                         detailView.showRfid(s);
+                        Device.closeFinger(new byte[200]);
+                        Device.closeRfid(new byte[200]);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
+                        String errInfo = throwable.getMessage();
+                        if (TextUtils.isEmpty(errInfo)) {
+                            detailView.alert("扫描RFID失败！");
+                        } else if (TextUtils.equals(errInfo, "取消扫描！")) {
+                            Thread.sleep(1000);         //延迟一秒，设备关闭需要时间，防止短时间内再次点击获取RFID
+                        } else {
+                            detailView.alert("扫描RFID失败！\r\n" + throwable.getMessage());
+                        }
                         detailView.hideLoading();
-                        detailView.alert("扫描RFID失败！\r\n" + throwable.getMessage());
                     }
                 });
     }

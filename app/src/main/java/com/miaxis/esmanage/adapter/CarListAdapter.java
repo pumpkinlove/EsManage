@@ -54,6 +54,7 @@ public class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.ViewHold
         if (car != null) {
             holder.sdvCar.setImageURI(car.getCarphoto());
             holder.tvCarPlateNo.setText(car.getPlateno());
+            holder.tvCarCode.setText(car.getCarcode());
             holder.llCar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -77,6 +78,8 @@ public class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.ViewHold
         SimpleDraweeView sdvCar;
         @BindView(R.id.tv_car_plate_no)
         TextView tvCarPlateNo;
+        @BindView(R.id.tv_car_code)
+        TextView tvCarCode;
         @BindView(R.id.ll_car)
         LinearLayout llCar;
 

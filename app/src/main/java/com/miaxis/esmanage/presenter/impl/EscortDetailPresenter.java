@@ -59,6 +59,9 @@ public class EscortDetailPresenter implements IEscortDetailPresenter {
                 .flatMap(new Function<Escort, ObservableSource<ResponseEntity>>() {
                     @Override
                     public ObservableSource<ResponseEntity> apply(Escort escort) throws Exception {
+                        if (TextUtils.isEmpty(escort.getPhotoUrl())) {
+                            throw new Exception("押运员照片不能为空！");
+                        }
                         Config config = configModel.loadConfig();
                         return escortModel.addEscort(escort, config);
                     }
@@ -157,6 +160,7 @@ public class EscortDetailPresenter implements IEscortDetailPresenter {
                 .flatMap(new Function<Escort, ObservableSource<ResponseEntity>>() {
                     @Override
                     public ObservableSource<ResponseEntity> apply(Escort escort) throws Exception {
+
                         Config config = configModel.loadConfig();
                         return escortModel.modEscort(escort, config);
                     }
