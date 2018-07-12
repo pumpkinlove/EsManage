@@ -41,6 +41,8 @@ import butterknife.OnClick;
 import static com.miaxis.esmanage.util.Constant.INTENT_ESCORT_DETAIL_CAR;
 import static com.miaxis.esmanage.util.Constant.INTENT_DETAIL_OP;
 import static com.miaxis.esmanage.util.Constant.INTENT_EXTRA_COM_ID;
+import static com.miaxis.esmanage.util.Constant.MODE_ADD;
+import static com.miaxis.esmanage.util.Constant.MODE_MOD;
 
 public class CarDetailActivity extends BaseActivity implements ICarDetailView {
 
@@ -307,6 +309,9 @@ public class CarDetailActivity extends BaseActivity implements ICarDetailView {
         sdvCar.setEnabled(editable);
         if (editable) {
             etCarPlateNo.requestFocus();
+        }
+        if (mode == MODE_MOD) {
+            etCarCode.setEnabled(false);
         }
     }
 

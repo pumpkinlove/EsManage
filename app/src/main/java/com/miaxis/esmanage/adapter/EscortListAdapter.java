@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.miaxis.esmanage.R;
 import com.miaxis.esmanage.entity.Escort;
@@ -52,6 +53,7 @@ public class EscortListAdapter extends RecyclerView.Adapter<EscortListAdapter.Vi
         final int fPosition = position;
         final Escort escort = escortList.get(position);
         if (escort != null) {
+            Fresco.getImagePipeline().clearCaches();
             holder.sdvEscort.setImageURI(escort.getPhotoUrl());
             holder.tvEscortName.setText(escort.getEsname());
             holder.tvEscortCode.setText(escort.getEscode());

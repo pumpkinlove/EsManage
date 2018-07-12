@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.miaxis.esmanage.R;
 import com.miaxis.esmanage.entity.Car;
@@ -52,6 +53,7 @@ public class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.ViewHold
         final int fPosition = position;
         final Car car = carList.get(position);
         if (car != null) {
+            Fresco.getImagePipeline().clearCaches();
             holder.sdvCar.setImageURI(car.getCarphoto());
             holder.tvCarPlateNo.setText(car.getPlateno());
             holder.tvCarCode.setText(car.getCarcode());

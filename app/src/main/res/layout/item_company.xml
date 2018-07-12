@@ -7,6 +7,7 @@
     android:orientation="horizontal">
 
     <TextView
+        android:hint="请选择"
         android:gravity="center"
         android:background="@drawable/white_stroke_button_bg"
         android:id="@+id/tv_company_name"

@@ -198,21 +198,12 @@ public class EscortListFragment extends BaseFragment implements IEscortListView 
 
     @Override
     public void showCompanySpinner1(List<Company> companyList) {
-        sp1IsFirstLoad = true;
-        sp2IsFirstLoad = true;
-        sp3IsFirstLoad = true;
-        spCompany1.setSelection(0);
-        spCompany2.setSelection(0);
         adapter1.setCompanyList(companyList);
         adapter1.notifyDataSetChanged();
     }
 
     @Override
     public void showCompanySpinner2(List<Company> companyList) {
-        sp2IsFirstLoad = true;
-        sp3IsFirstLoad = true;
-        spCompany2.setSelection(0);
-        spCompany3.setSelection(0);
         spCompany2.setVisibility(View.VISIBLE);
         adapter2.setCompanyList(companyList);
         adapter2.notifyDataSetChanged();
@@ -220,8 +211,6 @@ public class EscortListFragment extends BaseFragment implements IEscortListView 
 
     @Override
     public void showCompanySpinner3(List<Company> companyList) {
-        sp3IsFirstLoad = true;
-        spCompany3.setSelection(0);
         spCompany3.setVisibility(View.VISIBLE);
         adapter3.setCompanyList(companyList);
         adapter3.notifyDataSetChanged();

@@ -39,6 +39,7 @@ import butterknife.OnClick;
 import static com.miaxis.esmanage.util.Constant.INTENT_ESCORT_DETAIL_ESCORT;
 import static com.miaxis.esmanage.util.Constant.INTENT_DETAIL_OP;
 import static com.miaxis.esmanage.util.Constant.INTENT_EXTRA_COM_ID;
+import static com.miaxis.esmanage.util.Constant.MODE_MOD;
 import static com.miaxis.esmanage.util.Constant.REQUEST_CODE_GET_FINGER;
 
 public class EscortDetailActivity extends BaseActivity implements IEscortDetailView {
@@ -310,6 +311,9 @@ public class EscortDetailActivity extends BaseActivity implements IEscortDetailV
         tvEscortComp.setEnabled(editable);
         if (editable) {
             etEscortName.requestFocus();
+        }
+        if (mode == MODE_MOD) {
+            etEscortCode.setEnabled(false);
         }
     }
 
